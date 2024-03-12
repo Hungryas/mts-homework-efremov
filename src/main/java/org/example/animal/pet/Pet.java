@@ -15,9 +15,9 @@ public abstract class Pet extends AbstractAnimal {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{'" +
+        return
                 super.toString() +
-                ", owner='" + owner + '\'' +
-                '}';
+                        ", owner='" + owner + '\'' +
+                        '}';
     }
 }

@@ -1,11 +1,8 @@
 package org.example.animal;
 
-import lombok.Getter;
-
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
-@Getter
 public abstract class AbstractAnimal implements Animal {
 
     protected String breed;
@@ -23,6 +20,22 @@ public abstract class AbstractAnimal implements Animal {
         this.character = randomAlphabetic(4, 12);
     }
 
+    public String getBreed() {
+        return this.breed;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Double getCost() {
+        return this.cost;
+    }
+
+    public String getCharacter() {
+        return this.character;
+    }
+
     @Override
     public void eat() {
     }
@@ -33,7 +46,8 @@ public abstract class AbstractAnimal implements Animal {
 
     @Override
     public String toString() {
-        return "breed='" + breed + '\'' +
+        return "\n" + this.getClass().getSimpleName() + "{'" +
+                "breed='" + breed + '\'' +
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
                 ", character='" + character + '\'';

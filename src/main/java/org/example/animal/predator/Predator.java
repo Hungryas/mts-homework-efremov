@@ -15,8 +15,7 @@ public abstract class Predator extends AbstractAnimal {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{'" +
-                super.toString() +
+        return super.toString() +
                 ", habitat='" + habitat + '\'' +
                 '}';
     }
