@@ -7,10 +7,8 @@ import org.example.service.impl.ZooService;
 public class Main {
 
     public static void main(String[] args) {
-        CreateAnimalService zooService = new ZooService();
-        zooService.createAnimals();
-
         CreateAnimalServiceImpl createAnimalService = new CreateAnimalServiceImpl();
+        createAnimalService.createAnimalsFromDefault();
         createAnimalService.createAnimals();
         createAnimalService.createAnimals(10);
     }

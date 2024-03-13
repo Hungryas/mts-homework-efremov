@@ -21,6 +21,10 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         System.out.println("Created in 'do-while' cycle: " + animals);
     }
 
+    public void createAnimalsFromDefault() {
+        CreateAnimalService.super.createAnimals();
+    }
+
     public void createAnimals(int number) {
         ArrayList<AbstractAnimal> animals = new ArrayList<>();
 
