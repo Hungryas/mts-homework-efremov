@@ -1,8 +1,7 @@
 package org.example.animal.pet;
 
+import com.github.javafaker.Faker;
 import org.example.animal.AbstractAnimal;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public abstract class Pet extends AbstractAnimal {
 
@@ -10,7 +9,8 @@ public abstract class Pet extends AbstractAnimal {
 
     protected Pet() {
         super();
-        this.owner = randomAlphabetic(4, 12);
+        Faker faker = new Faker();
+        this.owner = faker.name().fullName();
     }
 
     @Override

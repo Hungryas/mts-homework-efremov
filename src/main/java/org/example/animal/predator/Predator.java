@@ -1,8 +1,7 @@
 package org.example.animal.predator;
 
+import com.github.javafaker.Faker;
 import org.example.animal.AbstractAnimal;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public abstract class Predator extends AbstractAnimal {
 
@@ -10,7 +9,8 @@ public abstract class Predator extends AbstractAnimal {
 
     protected Predator() {
         super();
-        this.habitat = randomAlphabetic(4, 12);
+        Faker faker = new Faker();
+        this.habitat = faker.lorem().word();
     }
 
     @Override
