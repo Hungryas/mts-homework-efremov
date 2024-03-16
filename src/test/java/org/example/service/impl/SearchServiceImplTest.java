@@ -49,7 +49,7 @@ class SearchServiceImplTest {
     void failureCheckLeapYearAnimalWithInvalidAnimalException() {
         assertThatThrownBy(() -> searchService.checkLeapYearAnimal(null))
                 .isInstanceOf(InvalidAnimalException.class)
-                .hasMessageStartingWith("На вход пришёл некорректный объект животного");
+                .hasMessageMatching("На вход пришёл некорректный объект животного \\d{4}-\\d{2}-\\d{2}");
     }
 
     @Test
@@ -58,8 +58,9 @@ class SearchServiceImplTest {
         AbstractAnimal testAnimal = animal.toBuilder()
                 .birthDate(null)
                 .build();
+        String expectedMessage = "У животного %s не указана дата его рождения".formatted(testAnimal.getClass().getSimpleName());
         assertThatThrownBy(() -> searchService.checkLeapYearAnimal(testAnimal))
                 .isInstanceOf(InvalidAnimalBirthDateException.class)
-                .hasMessageStartingWith("У животного %s не указана дата его рождения".formatted(testAnimal.getClass().getSimpleName()));
+                .hasMessageContaining(expectedMessage);
     }
 }
