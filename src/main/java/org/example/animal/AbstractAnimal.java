@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -23,6 +24,7 @@ public class AbstractAnimal implements Animal {
 
     protected String character;
 
+    @Setter
     protected LocalDate birthDate;
 
     protected AbstractAnimal() {
