@@ -1,5 +1,7 @@
 package org.example.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.example.animal.AbstractAnimal;
 import org.example.animal.pet.Cat;
 import org.example.animal.pet.Dog;
@@ -8,6 +10,7 @@ import org.example.animal.predator.Wolf;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnimalHelper {
 
     public static AbstractAnimal getRandomAnimal() {
