@@ -44,7 +44,7 @@ public class AbstractAnimal implements Animal {
 
     @Override
     public String toString() {
-        return "\n" + this.getClass().getSimpleName() + "{'" +
+        return this.getClass().getSimpleName() + "{'" +
                 "breed='" + breed + '\'' +
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
