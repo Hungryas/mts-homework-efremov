@@ -6,8 +6,6 @@ import org.example.errors.InvalidAnimalException;
 import org.example.service.SearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -23,25 +21,36 @@ class SearchServiceImplTest {
 
     private final AbstractAnimal animal = getRandomAnimal();
 
-    @ParameterizedTest(name = "{displayName} [{index}] year=''{0}''")
-    @DisplayName("Позитивный тест checkLeapYearAnimal")
-    @ValueSource(ints = {2000, 2001})
-    void successCheckLeapYearAnimal(int year) {
+    @Test
+    @DisplayName("Позитивный тест checkLeapYearAnimal с невисокосным годом")
+    void successCheckLeapYearAnimalIsFalse() {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         AbstractAnimal testAnimal = animal.toBuilder()
-                .birthDate(LocalDate.of(year, 1, 1))
+                .birthDate(LocalDate.of(2001, 1, 1))
                 .build();
 
         searchService.checkLeapYearAnimal(testAnimal);
         String actualOutContent = outContent.toString().trim();
 
-        if (testAnimal.getBirthDate().isLeapYear()) {
-            assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " был рожден в високосный год");
-        } else {
-            assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " не был рожден в високосный год");
-        }
+        assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " не был рожден в високосный год");
+    }
+
+    @Test
+    @DisplayName("Позитивный тест checkLeapYearAnimal с високосным годом")
+    void successCheckLeapYearAnimalIsTrue() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        AbstractAnimal testAnimal = animal.toBuilder()
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .build();
+
+        searchService.checkLeapYearAnimal(testAnimal);
+        String actualOutContent = outContent.toString().trim();
+
+        assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " был рожден в високосный год");
     }
 
     @Test
