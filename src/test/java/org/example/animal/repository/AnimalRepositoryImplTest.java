@@ -1,7 +1,6 @@
 package org.example.animal.repository;
 
 import org.example.animal.AbstractAnimal;
-import org.example.animal.Animal;
 import org.example.animal.pet.Cat;
 import org.example.animal.pet.Dog;
 import org.example.animal.pet.Pet;
@@ -30,24 +29,26 @@ class AnimalRepositoryImplTest {
 
     @BeforeAll
     static void setup() {
-        Pet cat = new Cat();
-        cat.setBirthDate(LocalDate.of(2000, 1, 1));
+        Pet cat1 = new Cat();
+        cat1.setBirthDate(LocalDate.of(2000, 1, 1));
         Pet dog = new Dog();
         dog.setBirthDate(LocalDate.of(2001, 1, 1));
         Predator shark = new Shark();
         shark.setBirthDate(LocalDate.of(2002, 1, 1));
         Predator wolf = new Wolf();
         wolf.setBirthDate(LocalDate.of(2003, 1, 1));
+        Pet cat2 = new Cat();
+        cat2.setBirthDate(LocalDate.of(2004, 1, 1));
 
-        animals.addAll(List.of(cat, dog, shark, wolf));
+        animals.addAll(List.of(cat1, dog, shark, wolf, cat2));
     }
 
     @Test
     @DisplayName("Позитивный тест findLeapYearNames")
     void successFindLeapYearNames() {
         Map<String, LocalDate> leapYearNames = animalRepository.findLeapYearNames(animals);
-        assertThat(leapYearNames).hasSize(1)
-                .containsValue(LocalDate.of(2000, 1, 1));
+        assertThat(leapYearNames).hasSize(2)
+                .containsValues(LocalDate.of(2000, 1, 1), LocalDate.of(2004, 1, 1));
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
@@ -62,12 +63,11 @@ class AnimalRepositoryImplTest {
     @Test
     @DisplayName("Позитивный тест findOlderAnimal с возрастом меньше возраста одного из животных")
     void successFindOlderAnimal() {
-        AbstractAnimal expectedAnimal = animals.getFirst();
-        int age = LocalDate.now().getYear() - expectedAnimal.getBirthDate().getYear() - 1;
-        Map<Animal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
-        assertThat(olderAnimals).hasSize(1)
-                .containsKey(expectedAnimal);
+        AbstractAnimal expectedAnimal = animals.getLast();
+        int age = LocalDate.now().getYear() - expectedAnimal.getBirthDate().getYear();
         Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
+        assertThat(olderAnimals).hasSize(4)
+                .doesNotContainKey(expectedAnimal);
     }
 
     @Test
@@ -80,12 +80,20 @@ class AnimalRepositoryImplTest {
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
-    @DisplayName("Негативный тест findOlderAnimal")
+    @DisplayName("Негативный тест findOlderAnimal массива животных")
     @NullAndEmptySource
-    void failureFindOlderAnimal(List<AbstractAnimal> animals) {
+    void failureFindOlderAnimalWithBadList(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findOlderAnimal(animals, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("Массив животных не должен быть пустым");
+    }
+
+    @Test
+    @DisplayName("Негативный тест findOlderAnimal возраста животных")
+    void failureFindOlderAnimalWithBadAge() {
+        assertThatThrownBy(() -> animalRepository.findOlderAnimal(animals, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageMatching("Возраст не может быть отрицательным");
     }
 
     @Test
@@ -94,7 +102,7 @@ class AnimalRepositoryImplTest {
         Map<String, Integer> duplicates = animalRepository.findDuplicate(animals);
         assertThat(duplicates).hasSize(4)
                 .containsOnlyKeys("Cat", "Dog", "Shark", "Wolf")
-                .containsValue(1);
+                .containsValues(1, 2);
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
