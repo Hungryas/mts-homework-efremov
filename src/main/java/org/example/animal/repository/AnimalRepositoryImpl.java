@@ -38,8 +38,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         }
         Map<AbstractAnimal, Integer> olderAnimals = new HashMap<>();
         int currentYear = LocalDate.now().getYear();
-        AbstractAnimal olderAnimal = animals.getFirst();
-        int olderAnimalAge = currentYear - olderAnimal.getBirthDate().getYear();
+        AbstractAnimal olderAnimal = null;
+        int olderAnimalAge = 0;
 
         for (AbstractAnimal animal : animals) {
             int animalBirthYear = animal.getBirthDate().getYear();
