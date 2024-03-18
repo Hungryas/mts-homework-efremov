@@ -66,7 +66,7 @@ class AnimalRepositoryImplTest {
         AbstractAnimal expectedAnimal = animals.getLast();
         int age = LocalDate.now().getYear() - expectedAnimal.getBirthDate().getYear();
         Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
-        assertThat(olderAnimals).hasSize(4)
+        assertThat(olderAnimals).hasSize(animals.size() - 1)
                 .doesNotContainKey(expectedAnimal);
     }
 
@@ -100,7 +100,7 @@ class AnimalRepositoryImplTest {
     @DisplayName("Позитивный тест findDuplicate")
     void successFindDuplicate() {
         Map<String, Integer> duplicates = animalRepository.findDuplicate(animals);
-        assertThat(duplicates).hasSize(4)
+        assertThat(duplicates).hasSize(animals.size() - 1)
                 .containsOnlyKeys("Cat", "Dog", "Shark", "Wolf")
                 .containsValues(1, 2);
     }
