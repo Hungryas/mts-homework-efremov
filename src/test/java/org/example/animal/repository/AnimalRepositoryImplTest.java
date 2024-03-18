@@ -102,7 +102,7 @@ class AnimalRepositoryImplTest {
         Map<String, Integer> duplicates = animalRepository.findDuplicate(animals);
         assertThat(duplicates).hasSize(animals.size() - 1)
                 .containsOnlyKeys("Cat", "Dog", "Shark", "Wolf")
-                .containsValues(1, 2);
+                .containsExactlyInAnyOrderEntriesOf(Map.of("Cat", 2, "Dog", 1, "Shark", 1, "Wolf", 1));
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
