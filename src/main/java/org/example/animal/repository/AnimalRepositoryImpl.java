@@ -11,16 +11,18 @@ import java.util.Map;
 @Log4j2
 public class AnimalRepositoryImpl implements AnimalRepository {
 
+    public static final String ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE = "Массив животных не должен быть пустым";
+
     @Override
     public Map<String, LocalDate> findLeapYearNames(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException("Массив животных не должен быть пустым");
+            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
         }
         Map<String, LocalDate> leapYearNames = new HashMap<>();
 
         for (AbstractAnimal animal : animals) {
             if (animal.getBirthDate().isLeapYear()) {
-                String key = animal.getClass().getSimpleName() + animal.getName();
+                String key = String.format("%s %s", animal.getClass().getSimpleName(), animal.getName());
                 leapYearNames.put(key, animal.getBirthDate());
             }
         }
@@ -31,7 +33,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Map<AbstractAnimal, Integer> findOlderAnimal(List<AbstractAnimal> animals, int age) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException("Массив животных не должен быть пустым");
+            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
         }
         if (age < 0) {
             throw new IllegalArgumentException("Возраст не может быть отрицательным");
@@ -62,7 +64,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Map<String, Integer> findDuplicate(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException("Массив животных не должен быть пустым");
+            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
         }
         Map<String, Integer> duplicates = new HashMap<>();
 
