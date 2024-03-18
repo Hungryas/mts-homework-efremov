@@ -2,7 +2,6 @@ package org.example.animal.repository;
 
 import lombok.extern.log4j.Log4j2;
 import org.example.animal.AbstractAnimal;
-import org.example.animal.Animal;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -35,11 +34,12 @@ public class AnimalRepositoryImpl implements AnimalRepository {
             throw new IllegalArgumentException("Массив животных не должен быть пустым");
         }
         if (age < 0) {
-            throw new IllegalArgumentException("Возраст должен быть больше нуля");
+            throw new IllegalArgumentException("Возраст не может быть отрицательным");
         }
         Map<AbstractAnimal, Integer> olderAnimals = new HashMap<>();
         int currentYear = LocalDate.now().getYear();
-        Map.Entry<AbstractAnimal, Integer> olderAnimal = null;
+        AbstractAnimal olderAnimal = animals.getFirst();
+        int olderAnimalAge = currentYear - olderAnimal.getBirthDate().getYear();
 
         for (AbstractAnimal animal : animals) {
             int animalBirthYear = animal.getBirthDate().getYear();
@@ -47,12 +47,13 @@ public class AnimalRepositoryImpl implements AnimalRepository {
 
             if (animalAge > age) {
                 olderAnimals.put(animal, animalAge);
-            } else if (olderAnimals.isEmpty() && (olderAnimal == null || olderAnimal.getValue() < animalAge)) {
-                olderAnimal = Map.entry(animal, animalAge);
+            } else if (olderAnimals.isEmpty() && olderAnimalAge < animalAge) {
+                olderAnimal = animal;
+                olderAnimalAge = animalAge;
             }
         }
-        if (olderAnimals.isEmpty() && olderAnimal != null) {
-            olderAnimals.put(olderAnimal.getKey(), olderAnimal.getValue());
+        if (olderAnimals.isEmpty()) {
+            olderAnimals.put(olderAnimal, olderAnimalAge);
         }
 
         return olderAnimals;
