@@ -30,14 +30,14 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     }
 
     @Override
-    public Map<Animal, Integer> findOlderAnimal(List<AbstractAnimal> animals, int age) {
+    public Map<AbstractAnimal, Integer> findOlderAnimal(List<AbstractAnimal> animals, int age) {
         if (animals == null || animals.isEmpty()) {
             throw new IllegalArgumentException("Массив животных не должен быть пустым");
         }
         if (age < 0) {
             throw new IllegalArgumentException("Возраст должен быть больше нуля");
         }
-        Map<Animal, Integer> olderAnimals = new HashMap<>();
+        Map<AbstractAnimal, Integer> olderAnimals = new HashMap<>();
         int currentYear = LocalDate.now().getYear();
         Map.Entry<AbstractAnimal, Integer> olderAnimal = null;
 

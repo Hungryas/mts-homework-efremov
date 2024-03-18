@@ -67,13 +67,14 @@ class AnimalRepositoryImplTest {
         Map<Animal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
         assertThat(olderAnimals).hasSize(1)
                 .containsKey(expectedAnimal);
+        Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
     }
 
     @Test
     @DisplayName("Позитивный тест findOlderAnimal с возрастом больше возраста любого животного")
     void successFindOlderAnimalOfPossible() {
         AbstractAnimal expectedAnimal = animals.getFirst();
-        Map<Animal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, Integer.MAX_VALUE);
+        Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, Integer.MAX_VALUE);
         assertThat(olderAnimals).hasSize(1)
                 .containsKey(expectedAnimal);
     }
