@@ -68,13 +68,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
 
         for (AbstractAnimal animal : animals) {
             String animalType = animal.getClass().getSimpleName();
-
-            if (duplicates.containsKey(animalType)) {
-                int count = duplicates.get(animalType);
-                duplicates.replace(animalType, count + 1);
-            } else {
-                duplicates.put(animalType, 1);
-            }
+            duplicates.merge(animalType, 1, Integer::sum);
         }
         log.info(duplicates);
 
