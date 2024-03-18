@@ -1,9 +1,9 @@
 package org.example.animal;
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,8 +11,7 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 @Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 public class AbstractAnimal implements Animal {
 
     protected String breed;
@@ -23,6 +22,7 @@ public class AbstractAnimal implements Animal {
 
     protected String character;
 
+    @Setter
     protected LocalDate birthDate;
 
     protected AbstractAnimal() {
