@@ -93,7 +93,7 @@ class AnimalRepositoryImplTest {
     void successFindOlderAnimalOfPossible() {
         Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, Integer.MAX_VALUE);
         int expectedAge = LocalDate.now().getYear() - cat1.getBirthDate().getYear();
-        assertThat(olderAnimals).containsExactlyEntriesOf(Map.of((AbstractAnimal) cat1, expectedAge));
+        assertThat(olderAnimals).containsExactlyEntriesOf(Map.of(cat1, expectedAge));
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
