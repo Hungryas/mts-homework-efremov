@@ -16,8 +16,10 @@ public class AbstractAnimal implements Animal {
 
     protected String breed;
 
+    @Setter
     protected String name;
 
+    @Setter
     protected Double cost;
 
     protected String character;
@@ -51,5 +53,4 @@ public class AbstractAnimal implements Animal {
                 ", character='" + character + '\'' +
                 ", birthDate='" + birthDate + '\'';
     }
-
 }
