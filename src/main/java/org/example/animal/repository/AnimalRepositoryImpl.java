@@ -60,12 +60,43 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 .collect(Collectors.groupingBy(animal -> animal.getClass().getSimpleName()));
     }
 
-        for (AbstractAnimal animal : animals) {
-            String animalType = animal.getClass().getSimpleName();
-            duplicates.merge(animalType, 1, Integer::sum);
+    @Override
+    public void findAverageAge(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
         }
-        log.info(duplicates);
+        int currentYear = LocalDate.now().getYear();
+        animals.stream()
+                .mapToInt(animal -> currentYear - animal.getBirthDate().getYear())
+                .average()
+                .ifPresent(age -> System.out.println("Средний возраст равен " + age));
+    }
 
-        return duplicates;
+    @Override
+    public List<AbstractAnimal> findOldAndExpensive(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+        }
+        double averageCost = animals.stream()
+                .mapToDouble(AbstractAnimal::getCost)
+                .average().orElseThrow();
+
+        return animals.stream()
+                .filter(animal -> animal.getCost() > averageCost)
+                .sorted(Comparator.comparing(AbstractAnimal::getBirthDate))
+                .toList();
+    }
+
+    @Override
+    public List<String> findMinCostAnimals(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+        }
+        return animals.stream()
+                .sorted(Comparator.comparing(AbstractAnimal::getCost))
+                .limit(3)
+                .map(AbstractAnimal::getName)
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 }
