@@ -77,7 +77,9 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         if (animals == null || animals.isEmpty()) {
             throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
         }
+        int currentYear = LocalDate.now().getYear();
         double averageCost = animals.stream()
+                .filter(animal -> currentYear - animal.getBirthDate().getYear() > 5)
                 .mapToDouble(AbstractAnimal::getCost)
                 .average().orElseThrow();
 
