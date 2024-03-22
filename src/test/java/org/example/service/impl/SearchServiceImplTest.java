@@ -27,14 +27,11 @@ class SearchServiceImplTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        AbstractAnimal testAnimal = animal.toBuilder()
-                .birthDate(LocalDate.of(2001, 1, 1))
-                .build();
-
-        searchService.checkLeapYearAnimal(testAnimal);
+        animal.setBirthDate(LocalDate.of(2001, 1, 1));
+        searchService.checkLeapYearAnimal(animal);
         String actualOutContent = outContent.toString().trim();
 
-        assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " не был рожден в високосный год");
+        assertThat(actualOutContent).isEqualTo(animal.getName() + " не был рожден в високосный год");
     }
 
     @Test
@@ -43,14 +40,11 @@ class SearchServiceImplTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
-        AbstractAnimal testAnimal = animal.toBuilder()
-                .birthDate(LocalDate.of(2000, 1, 1))
-                .build();
-
-        searchService.checkLeapYearAnimal(testAnimal);
+        animal.setBirthDate(LocalDate.of(2000, 1, 1));
+        searchService.checkLeapYearAnimal(animal);
         String actualOutContent = outContent.toString().trim();
 
-        assertThat(actualOutContent).isEqualTo(testAnimal.getName() + " был рожден в високосный год");
+        assertThat(actualOutContent).isEqualTo(animal.getName() + " был рожден в високосный год");
     }
 
     @Test
@@ -58,17 +52,15 @@ class SearchServiceImplTest {
     void failureCheckLeapYearAnimalWithInvalidAnimalException() {
         assertThatThrownBy(() -> searchService.checkLeapYearAnimal(null))
                 .isInstanceOf(InvalidAnimalException.class)
-                .hasMessageMatching("На вход пришёл некорректный объект животного \\d{4}-\\d{2}-\\d{2}");
+                .hasMessage("На вход пришёл некорректный объект животного %s".formatted(LocalDate.now()));
     }
 
     @Test
     @DisplayName("Негативный тест checkLeapYearAnimal с InvalidAnimalBirthDateException")
     void failureCheckLeapYearAnimalWithInvalidAnimalBirthDateException() {
-        AbstractAnimal testAnimal = animal.toBuilder()
-                .birthDate(null)
-                .build();
-        String expectedMessage = "У животного %s не указана дата его рождения".formatted(testAnimal.getClass().getSimpleName());
-        assertThatThrownBy(() -> searchService.checkLeapYearAnimal(testAnimal))
+        animal.setBirthDate(null);
+        String expectedMessage = "У животного %s не указана дата его рождения".formatted(animal.getClass().getSimpleName());
+        assertThatThrownBy(() -> searchService.checkLeapYearAnimal(animal))
                 .isInstanceOf(InvalidAnimalBirthDateException.class)
                 .hasMessageContaining(expectedMessage);
     }

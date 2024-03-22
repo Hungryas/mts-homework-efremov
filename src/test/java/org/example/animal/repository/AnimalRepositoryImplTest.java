@@ -23,6 +23,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnimalRepositoryImplTest {
 
+    public static final String ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE = "Массив животных не должен быть пустым";
+
     private static final List<AbstractAnimal> animals = new ArrayList<>();
 
     private static final Cat cat1 = new Cat();
@@ -76,7 +78,7 @@ class AnimalRepositoryImplTest {
     void failureFindLeapYearNames(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findLeapYearNames(animals))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 
     @Test
@@ -102,7 +104,7 @@ class AnimalRepositoryImplTest {
     void failureFindOlderAnimalWithBadList(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findOlderAnimal(animals, 0))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 
     @Test
@@ -110,7 +112,7 @@ class AnimalRepositoryImplTest {
     void failureFindOlderAnimalWithBadAge() {
         assertThatThrownBy(() -> animalRepository.findOlderAnimal(animals, -1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Возраст не может быть отрицательным");
+                .hasMessage("Возраст не может быть отрицательным");
     }
 
     @Test
@@ -127,7 +129,7 @@ class AnimalRepositoryImplTest {
     void failureFindDuplicate(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findDuplicate(animals))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 
     @Test
@@ -147,7 +149,7 @@ class AnimalRepositoryImplTest {
     void failureFindAverageAge(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findAverageAge(animals))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 
     @Test
@@ -163,7 +165,7 @@ class AnimalRepositoryImplTest {
     void failureFindOldAndExpensive(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findOldAndExpensive(animals))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 
     @Test
@@ -179,6 +181,6 @@ class AnimalRepositoryImplTest {
     void failureFindMinCostAnimals(List<AbstractAnimal> animals) {
         assertThatThrownBy(() -> animalRepository.findMinCostAnimals(animals))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageMatching("Массив животных не должен быть пустым");
+                .hasMessage(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
     }
 }
