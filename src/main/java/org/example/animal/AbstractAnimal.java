@@ -3,7 +3,6 @@ package org.example.animal;
 import com.github.javafaker.Faker;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,13 +10,14 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 @Getter
-@SuperBuilder(toBuilder = true)
 public class AbstractAnimal implements Animal {
 
     protected String breed;
 
+    @Setter
     protected String name;
 
+    @Setter
     protected Double cost;
 
     protected String character;
@@ -51,5 +51,4 @@ public class AbstractAnimal implements Animal {
                 ", character='" + character + '\'' +
                 ", birthDate='" + birthDate + '\'';
     }
-
 }
