@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 @Log4j2
 public class AnimalRepositoryImpl implements AnimalRepository {
 
+    private static final int CURRENT_YEAR = LocalDate.now().getYear();
+
     @Override
     public Map<String, LocalDate> findLeapYearNames(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
@@ -34,17 +36,16 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         if (age < 0) {
             throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_AGE.message());
         }
-        int currentYear = LocalDate.now().getYear();
         Map<AbstractAnimal, Integer> olderAnimals = animals.stream()
-                .filter(animal -> currentYear - animal.getBirthDate().getYear() > age)
+                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > age)
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        animal -> currentYear - animal.getBirthDate().getYear()));
+                        animal -> CURRENT_YEAR - animal.getBirthDate().getYear()));
 
         if (olderAnimals.isEmpty()) {
             animals.stream()
                     .min(Comparator.comparing(animal -> animal.getBirthDate().getYear()))
-                    .ifPresent(animal -> olderAnimals.put(animal, currentYear - animal.getBirthDate().getYear()));
+                    .ifPresent(animal -> olderAnimals.put(animal, CURRENT_YEAR - animal.getBirthDate().getYear()));
         }
 
         return olderAnimals;
@@ -65,9 +66,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         if (animals == null || animals.isEmpty()) {
             throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
         }
-        int currentYear = LocalDate.now().getYear();
         animals.stream()
-                .mapToInt(animal -> currentYear - animal.getBirthDate().getYear())
+                .mapToInt(animal -> CURRENT_YEAR - animal.getBirthDate().getYear())
                 .average()
                 .ifPresent(age -> System.out.println("Средний возраст равен " + age));
     }
@@ -77,9 +77,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
         if (animals == null || animals.isEmpty()) {
             throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
         }
-        int currentYear = LocalDate.now().getYear();
         double averageCost = animals.stream()
-                .filter(animal -> currentYear - animal.getBirthDate().getYear() > 5)
+                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > 5)
                 .mapToDouble(AbstractAnimal::getCost)
                 .average().orElseThrow();
 
