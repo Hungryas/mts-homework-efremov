@@ -57,7 +57,7 @@ class AnimalRepositoryImplTest {
 
         wolf.setName("Aaron");
         wolf.setCost(1000.0);
-        wolf.setBirthDate(LocalDate.of(2004, 1, 1));
+        wolf.setBirthDate(LocalDate.of(2024, 1, 1));
 
         animals.addAll(List.of(cat1, cat2, dog, shark, wolf));
     }
@@ -138,7 +138,7 @@ class AnimalRepositoryImplTest {
 
         animalRepository.findAverageAge(animals);
         String actualOutContent = outContent.toString().trim();
-        assertThat(actualOutContent).isEqualTo("Средний возраст равен 22.0");
+        assertThat(actualOutContent).isEqualTo("Средний возраст равен 18.0");
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")
@@ -154,7 +154,7 @@ class AnimalRepositoryImplTest {
     @DisplayName("Позитивный тест findOldAndExpensive")
     void successFindOldAndExpensive() {
         List<AbstractAnimal> oldAndExpensiveAnimals = animalRepository.findOldAndExpensive(animals);
-        assertThat(oldAndExpensiveAnimals).containsExactly(shark, wolf);
+        assertThat(oldAndExpensiveAnimals).containsExactly(shark);
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")

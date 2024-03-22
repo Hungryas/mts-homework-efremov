@@ -78,11 +78,11 @@ public class AnimalRepositoryImpl implements AnimalRepository {
             throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
         }
         double averageCost = animals.stream()
-                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > 5)
                 .mapToDouble(AbstractAnimal::getCost)
                 .average().orElseThrow();
 
         return animals.stream()
+                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > 5)
                 .filter(animal -> animal.getCost() > averageCost)
                 .sorted(Comparator.comparing(AbstractAnimal::getBirthDate))
                 .toList();
