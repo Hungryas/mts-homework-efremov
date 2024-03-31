@@ -8,13 +8,13 @@ import org.example.animal.pet.Dog;
 import org.example.animal.predator.Shark;
 import org.example.animal.predator.Wolf;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnimalHelper {
 
     public static AbstractAnimal getRandomAnimal() {
-        return switch (ThreadLocalRandom.current().nextInt(4)) {
+        return switch (RandomGenerator.getDefault().nextInt(4)) {
             case 0 -> new Cat();
             case 1 -> new Dog();
             case 2 -> new Shark();

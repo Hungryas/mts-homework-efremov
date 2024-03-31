@@ -8,8 +8,12 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @AllArgsConstructor
 public enum Error {
-    ILLEGAL_ANIMAL_AGE("Возраст не может быть отрицательным"),
-    ILLEGAL_ANIMAL_LIST("Массив животных не должен быть пустым");
+    ILLEGAL_NEGATIVE("%s не может быть отрицательным"),
+    ILLEGAL_EMPTY("%s не должен быть пустым");
 
     private final String message;
+
+    public String messageWith(String parameter) {
+        return message.formatted(parameter);
+    }
 }

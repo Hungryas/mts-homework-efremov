@@ -2,7 +2,6 @@ package org.example.animal.repository;
 
 import lombok.extern.log4j.Log4j2;
 import org.example.animal.AbstractAnimal;
-import org.example.errors.Error;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -10,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.example.errors.Error.ILLEGAL_EMPTY;
+import static org.example.errors.Error.ILLEGAL_NEGATIVE;
 
 @Log4j2
 public class AnimalRepositoryImpl implements AnimalRepository {
@@ -19,7 +21,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Map<String, LocalDate> findLeapYearNames(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         return animals.stream()
                 .filter(animal -> animal.getBirthDate().isLeapYear())
@@ -31,10 +33,10 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Map<AbstractAnimal, Integer> findOlderAnimal(List<AbstractAnimal> animals, int age) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         if (age < 0) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_AGE.message());
+            throw new IllegalArgumentException(ILLEGAL_NEGATIVE.messageWith("возраст"));
         }
         Map<AbstractAnimal, Integer> olderAnimals = animals.stream()
                 .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > age)
@@ -54,7 +56,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public Map<String, List<AbstractAnimal>> findDuplicate(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
 
         return animals.stream()
@@ -64,7 +66,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public void findAverageAge(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         animals.stream()
                 .mapToInt(animal -> CURRENT_YEAR - animal.getBirthDate().getYear())
@@ -75,7 +77,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public List<AbstractAnimal> findOldAndExpensive(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         double averageCost = animals.stream()
                 .mapToDouble(AbstractAnimal::getCost)
@@ -91,7 +93,7 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     @Override
     public List<String> findMinCostAnimals(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(Error.ILLEGAL_ANIMAL_LIST.message());
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         return animals.stream()
                 .sorted(Comparator.comparing(AbstractAnimal::getCost))
