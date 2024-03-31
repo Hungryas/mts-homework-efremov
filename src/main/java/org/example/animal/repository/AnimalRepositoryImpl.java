@@ -4,76 +4,102 @@ import lombok.extern.log4j.Log4j2;
 import org.example.animal.AbstractAnimal;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.example.errors.Error.ILLEGAL_EMPTY;
+import static org.example.errors.Error.ILLEGAL_NEGATIVE;
 
 @Log4j2
 public class AnimalRepositoryImpl implements AnimalRepository {
 
-    public static final String ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE = "Массив животных не должен быть пустым";
+    private static final int CURRENT_YEAR = LocalDate.now().getYear();
 
     @Override
     public Map<String, LocalDate> findLeapYearNames(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
-        Map<String, LocalDate> leapYearNames = new HashMap<>();
-
-        for (AbstractAnimal animal : animals) {
-            if (animal.getBirthDate().isLeapYear()) {
-                String key = String.format("%s %s", animal.getClass().getSimpleName(), animal.getName());
-                leapYearNames.put(key, animal.getBirthDate());
-            }
-        }
-
-        return leapYearNames;
+        return animals.stream()
+                .filter(animal -> animal.getBirthDate().isLeapYear())
+                .collect(Collectors.toMap(
+                        animal -> String.format("%s %s", animal.getClass().getSimpleName(), animal.getName()),
+                        AbstractAnimal::getBirthDate));
     }
 
     @Override
     public Map<AbstractAnimal, Integer> findOlderAnimal(List<AbstractAnimal> animals, int age) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
         if (age < 0) {
-            throw new IllegalArgumentException("Возраст не может быть отрицательным");
+            throw new IllegalArgumentException(ILLEGAL_NEGATIVE.messageWith("возраст"));
         }
-        Map<AbstractAnimal, Integer> olderAnimals = new HashMap<>();
-        int currentYear = LocalDate.now().getYear();
-        AbstractAnimal olderAnimal = null;
-        int olderAnimalAge = 0;
+        Map<AbstractAnimal, Integer> olderAnimals = animals.stream()
+                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > age)
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        animal -> CURRENT_YEAR - animal.getBirthDate().getYear()));
 
-        for (AbstractAnimal animal : animals) {
-            int animalBirthYear = animal.getBirthDate().getYear();
-            int animalAge = currentYear - animalBirthYear;
-
-            if (animalAge > age) {
-                olderAnimals.put(animal, animalAge);
-            } else if (olderAnimals.isEmpty() && olderAnimalAge < animalAge) {
-                olderAnimal = animal;
-                olderAnimalAge = animalAge;
-            }
-        }
         if (olderAnimals.isEmpty()) {
-            olderAnimals.put(olderAnimal, olderAnimalAge);
+            animals.stream()
+                    .min(Comparator.comparing(animal -> animal.getBirthDate().getYear()))
+                    .ifPresent(animal -> olderAnimals.put(animal, CURRENT_YEAR - animal.getBirthDate().getYear()));
         }
 
         return olderAnimals;
     }
 
     @Override
-    public Map<String, Integer> findDuplicate(List<AbstractAnimal> animals) {
+    public Map<String, List<AbstractAnimal>> findDuplicate(List<AbstractAnimal> animals) {
         if (animals == null || animals.isEmpty()) {
-            throw new IllegalArgumentException(ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE);
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
-        Map<String, Integer> duplicates = new HashMap<>();
 
-        for (AbstractAnimal animal : animals) {
-            String animalType = animal.getClass().getSimpleName();
-            duplicates.merge(animalType, 1, Integer::sum);
+        return animals.stream()
+                .collect(Collectors.groupingBy(animal -> animal.getClass().getSimpleName()));
+    }
+
+    @Override
+    public void findAverageAge(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
         }
-        log.info(duplicates);
+        animals.stream()
+                .mapToInt(animal -> CURRENT_YEAR - animal.getBirthDate().getYear())
+                .average()
+                .ifPresent(age -> System.out.println("Средний возраст равен " + age));
+    }
 
-        return duplicates;
+    @Override
+    public List<AbstractAnimal> findOldAndExpensive(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
+        }
+        double averageCost = animals.stream()
+                .mapToDouble(AbstractAnimal::getCost)
+                .average().orElseThrow();
+
+        return animals.stream()
+                .filter(animal -> CURRENT_YEAR - animal.getBirthDate().getYear() > 5)
+                .filter(animal -> animal.getCost() > averageCost)
+                .sorted(Comparator.comparing(AbstractAnimal::getBirthDate))
+                .toList();
+    }
+
+    @Override
+    public List<String> findMinCostAnimals(List<AbstractAnimal> animals) {
+        if (animals == null || animals.isEmpty()) {
+            throw new IllegalArgumentException(ILLEGAL_EMPTY.messageWith("массив животных"));
+        }
+        return animals.stream()
+                .sorted(Comparator.comparing(AbstractAnimal::getCost))
+                .limit(3)
+                .map(AbstractAnimal::getName)
+                .sorted(Comparator.reverseOrder())
+                .toList();
     }
 }
