@@ -82,9 +82,10 @@ public class MathFunctions {
 
     private static <T> List<List<T>> splitRangeForConcurrency(List<T> range) {
         int processors = Runtime.getRuntime().availableProcessors();
-        int threads = range.size() > processors ? processors - 1 : range.size();
+        int size = range.size();
+        int threads = size > processors ? processors - 1 : size;
 
-        return ListUtils.partition(range, threads);
+        return ListUtils.partition(range, size / threads);
     }
 
     private static List<BigInteger> filterPrimeNumber(List<Integer> numbers) {
