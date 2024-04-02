@@ -3,7 +3,7 @@ package org.example.animal.pet;
 import com.github.javafaker.Faker;
 import org.example.animal.AbstractAnimal;
 
-public abstract class Pet extends AbstractAnimal {
+public abstract class Pet extends AbstractAnimal implements StrokeCounter {
 
     protected String owner;
 
