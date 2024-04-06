@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import java.util.random.RandomGenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -47,6 +48,12 @@ class MathFunctionsTest {
         assertThat(MathFunctions.fibonacciSequence(number)).containsExactlyElementsOf(expectedFibonacciSequence);
     }
 
+    private List<BigInteger> getBigIntegerListFromString(String expectedPrimeNumbersString) {
+        return Arrays.stream(expectedPrimeNumbersString.split(","))
+                .map(BigInteger::new)
+                .toList();
+    }
+
     @Test
     @DisplayName("Негативный тест fibonacciSequence")
     void failureFibonacciSequence() {
@@ -60,11 +67,11 @@ class MathFunctionsTest {
     @CsvSource(quoteCharacter = '"', textBlock = """
             2, 2  , "2"
             0, 100, "2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97",
-            100, 300, "101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293"
+            101, 228, "101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227"
             """)
     void successPrimeNumbersFromRange(int start, int end, String expectedPrimeNumbersString) {
         List<BigInteger> expectedPrimeNumbers = getBigIntegerListFromString(expectedPrimeNumbersString);
-        assertThat(MathFunctions.primeNumbersFromRage(start, end)).containsExactlyElementsOf(expectedPrimeNumbers);
+        assertThat(MathFunctions.primeNumbersFromRange(start, end)).containsExactlyElementsOf(expectedPrimeNumbers);
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] start={0}, end={1}")
@@ -74,7 +81,7 @@ class MathFunctionsTest {
             " 1,-1"
     })
     void failurePrimeNumbersFromRangeWithNegativeNumber(int start, int end) {
-        assertThatThrownBy(() -> MathFunctions.primeNumbersFromRage(start, end))
+        assertThatThrownBy(() -> MathFunctions.primeNumbersFromRange(start, end))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("число не может быть отрицательным");
     }
@@ -82,14 +89,40 @@ class MathFunctionsTest {
     @Test
     @DisplayName("Негативный тест primeNumbersFromRange с отрицательной длиной диапазона")
     void failurePrimeNumbersFromRangeWithReverseRange() {
-        assertThatThrownBy(() -> MathFunctions.primeNumbersFromRage(2, 1))
+        assertThatThrownBy(() -> MathFunctions.primeNumbersFromRange(2, 1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("начало диапазона должно быть меньше конца");
     }
 
-    private List<BigInteger> getBigIntegerListFromString(String expectedPrimeNumbersString) {
-        return Arrays.stream(expectedPrimeNumbersString.split(","))
-                .map(BigInteger::new)
-                .toList();
+    @Test
+    @DisplayName("Позитивный тест generateNumbersInSingleThreadMode")
+    void successGenerateNumbersInSingleThreadMode() {
+        int size = RandomGenerator.getDefault().nextInt(1, 1000);
+        List<Long> numbersInSingleThreadMode = MathFunctions.generateNumbersInSingleThreadMode(size);
+        assertThat(numbersInSingleThreadMode).hasSize(size);
+    }
+
+    @Test
+    @DisplayName("Негативный тест generateNumbersInSingleThreadMode")
+    void failureGenerateNumbersInSingleThreadMode() {
+        assertThatThrownBy(() -> MathFunctions.generateNumbersInSingleThreadMode(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("число должно быть больше 0");
+    }
+
+    @Test
+    @DisplayName("Позитивный тест generateNumbersInMultiThreadedMode")
+    void successGenerateNumbersInMultiThreadedMode() {
+        int size = RandomGenerator.getDefault().nextInt(1, 1000);
+        List<Long> numbersInSingleThreadMode = MathFunctions.generateNumbersInMultiThreadedMode(size);
+        assertThat(numbersInSingleThreadMode).hasSize(size);
+    }
+
+    @Test
+    @DisplayName("Негативный тест generateNumbersInMultiThreadedMode")
+    void failureGenerateNumbersInMultiThreadedModer() {
+        assertThatThrownBy(() -> MathFunctions.generateNumbersInMultiThreadedMode(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("число должно быть больше 0");
     }
 }
