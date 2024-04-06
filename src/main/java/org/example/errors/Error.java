@@ -9,7 +9,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public enum Error {
     ILLEGAL_NEGATIVE("%s не может быть отрицательным"),
-    ILLEGAL_EMPTY("%s не должен быть пустым");
+    ILLEGAL_EMPTY("%s не должен быть пустым"),
+    ILLEGAL_ZERO("число должно быть больше 0");
 
     private final String message;
 
