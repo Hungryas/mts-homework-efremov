@@ -27,6 +27,9 @@ public class AbstractAnimal implements Animal {
     @Setter
     protected LocalDate birthDate;
 
+    protected String secretInformation;
+
+    @SneakyThrows
     protected AbstractAnimal() {
         Faker faker = new Faker();
         this.breed = faker.lorem().word();
