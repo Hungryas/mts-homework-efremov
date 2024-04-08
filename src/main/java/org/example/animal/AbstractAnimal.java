@@ -10,6 +10,8 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class AbstractAnimal implements Animal {
 
     protected String breed;
@@ -24,6 +26,8 @@ public class AbstractAnimal implements Animal {
 
     @Setter
     protected LocalDate birthDate;
+
+    protected String secretInformation;
 
     protected AbstractAnimal() {
         Faker faker = new Faker();
@@ -50,5 +54,7 @@ public class AbstractAnimal implements Animal {
                 ", cost=" + cost +
                 ", character='" + character + '\'' +
                 ", birthDate='" + birthDate + '\'';
+                ", birthDate='" + birthDate + '\'' +
+                ", secretInformation='" + secretInformation + '\'';
     }
 }
