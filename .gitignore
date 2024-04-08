@@ -2,6 +2,9 @@
 .idea/
 build/
 out/
+src/main/resources/animals/
+src/main/resources/secretStore/
+src/main/resources/results/
 
 *.iws
 *.iml
