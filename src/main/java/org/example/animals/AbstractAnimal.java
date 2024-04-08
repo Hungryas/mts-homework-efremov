@@ -29,6 +29,7 @@ public class AbstractAnimal implements Animal {
 
     protected String secretInformation;
 
+    @SneakyThrows
     protected AbstractAnimal() {
         Faker faker = new Faker();
         this.breed = faker.lorem().word();
