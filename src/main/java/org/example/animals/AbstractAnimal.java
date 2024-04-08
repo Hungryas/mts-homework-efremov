@@ -3,10 +3,12 @@ package org.example.animals;
 import com.github.javafaker.Faker;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Base64;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
@@ -37,6 +39,7 @@ public class AbstractAnimal implements Animal {
         this.cost = Double.valueOf(randomNumeric(5));
         this.character = faker.lorem().word();
         this.birthDate = faker.date().birthday(0, 30).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.secretInformation = ResultReader.readSecretInformation();
     }
 
     @Override
