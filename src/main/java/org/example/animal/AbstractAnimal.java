@@ -12,6 +12,8 @@ import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 @Getter
 @Builder
 @AllArgsConstructor
+@JsonDeserialize(using = AbstractAnimal.Deserializer.class)
+@JsonSerialize(using = AbstractAnimal.Serializer.class)
 public class AbstractAnimal implements Animal {
 
     protected String breed;
@@ -29,6 +31,7 @@ public class AbstractAnimal implements Animal {
 
     protected String secretInformation;
 
+    @SneakyThrows
     protected AbstractAnimal() {
         Faker faker = new Faker();
         this.breed = faker.lorem().word();
@@ -53,7 +56,6 @@ public class AbstractAnimal implements Animal {
                 ", name='" + name + '\'' +
                 ", cost=" + cost +
                 ", character='" + character + '\'' +
-                ", birthDate='" + birthDate + '\'';
                 ", birthDate='" + birthDate + '\'' +
                 ", secretInformation='" + secretInformation + '\'';
     }
