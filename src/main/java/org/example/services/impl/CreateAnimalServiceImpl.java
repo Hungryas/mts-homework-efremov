@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.example.utils.AnimalHelper.getRandomAnimal;
 
@@ -16,11 +18,13 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
 
     @Override
     public Map<String, List<AbstractAnimal>> createAnimals() {
+        clearLogData();
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
         int i = 0;
 
         log.info("Created in 'do-while' cycle: ");
         do {
+            appendLogData(String.valueOf(++i));
             addRandomAnimals(animals);
         } while (++i < 10);
 
@@ -35,6 +39,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         if (number < 1) {
             throw new IllegalArgumentException("Количество животных должно быть положительным");
         }
+        clearLogData();
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
 
         log.info("Created in 'for-i' cycle: ");
@@ -49,6 +54,11 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         AbstractAnimal animal = getRandomAnimal();
         log.info(animal);
         String animalType = animal.getClass().getSimpleName();
+
+        String animalData = Stream.of(animalType, animal.getName(), animal.getCost(), animal.getBirthDate())
+                .map(String::valueOf)
+                .collect(Collectors.joining(" ", " ", "\n"));
+        appendLogData(animalData);
 
         if (!animals.containsKey(animalType)) {
             animals.put(animalType, new ArrayList<>(List.of(animal)));
