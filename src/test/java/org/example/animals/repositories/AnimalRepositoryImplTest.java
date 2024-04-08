@@ -12,11 +12,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -83,19 +85,37 @@ class AnimalRepositoryImplTest {
 
     @Test
     @DisplayName("Позитивный тест findOlderAnimal с возрастом меньше возраста одного из животных")
-    void successFindOlderAnimal() {
+    void successFindOlderAnimals() throws FileNotFoundException {
         int age = LocalDate.now().getYear() - wolf.getBirthDate().getYear();
         Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, age);
         assertThat(olderAnimals).hasSize(4)
                 .doesNotContainKey(wolf);
+        checkFindOlderAnimalsJson(olderAnimals);
+    }
+
+    private void checkFindOlderAnimalsJson(Map<AbstractAnimal, Integer> olderAnimals) throws FileNotFoundException {
+        List<AbstractAnimal> abstractAnimals = ResultReader.readOlderAnimals();
+        assertThat(olderAnimals).hasSameSizeAs(abstractAnimals);
+
+        for (AbstractAnimal abstractAnimal : abstractAnimals) {
+            boolean isMatchedAnimal = olderAnimals.keySet().stream()
+                    .filter(animal -> animal.getName().equals(abstractAnimal.getName()))
+                    .allMatch(animal -> Objects.equals(animal.getBreed(), abstractAnimal.getBreed()) &&
+                            Objects.equals(animal.getCost(), abstractAnimal.getCost()) &&
+                            Objects.equals(animal.getCharacter(), abstractAnimal.getCharacter()) &&
+                            Objects.equals(animal.getBirthDate(), abstractAnimal.getBirthDate()) &&
+                            Objects.equals(animal.getSecretInformation(), abstractAnimal.getSecretInformation()));
+            assertThat(isMatchedAnimal).isTrue();
+        }
     }
 
     @Test
     @DisplayName("Позитивный тест findOlderAnimal с возрастом больше возраста любого животного")
-    void successFindOlderAnimalOfPossible() {
+    void successFindOlderAnimalOfPossible() throws FileNotFoundException {
         Map<AbstractAnimal, Integer> olderAnimals = animalRepository.findOlderAnimal(animals, Integer.MAX_VALUE);
         int expectedAge = LocalDate.now().getYear() - cat1.getBirthDate().getYear();
         assertThat(olderAnimals).containsExactlyEntriesOf(Map.of(cat1, expectedAge));
+        checkFindOlderAnimalsJson(olderAnimals);
     }
 
     @ParameterizedTest(name = "{displayName} [{index}] animals={0}")

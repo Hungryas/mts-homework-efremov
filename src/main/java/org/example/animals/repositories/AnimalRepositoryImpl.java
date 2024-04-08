@@ -2,7 +2,6 @@ package org.example.animals.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
 import org.example.animals.AbstractAnimal;
 
@@ -62,6 +61,8 @@ public class AnimalRepositoryImpl implements AnimalRepository {
     }
 
     private void writeToFindOlderAnimalsJson(Map<AbstractAnimal, Integer> olderAnimals) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         try {
             Path path = Paths.get("src", "main", "resources", "results", "findOlderAnimals.json");
@@ -69,10 +70,6 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 Files.createFile(path);
                 log.info("findOlderAnimal.json успешно создан");
             }
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             String jsonString = mapper.writeValueAsString(olderAnimals.keySet());
             Files.writeString(path, jsonString);
         } catch (IOException e) {
