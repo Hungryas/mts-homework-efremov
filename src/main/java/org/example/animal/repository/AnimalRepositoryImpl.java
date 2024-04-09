@@ -70,8 +70,9 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                 log.info("findOlderAnimal.json успешно создан");
             }
             ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.registerModule(new JavaTimeModule());
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             String jsonString = mapper.writeValueAsString(olderAnimals.keySet());
             Files.writeString(path, jsonString);
         } catch (IOException e) {
