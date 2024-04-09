@@ -2,6 +2,7 @@ package org.example.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,6 +45,7 @@ public class ResultReader {
             throw new FileNotFoundException("secretInformation.txt существует");
         }
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         List<AbstractAnimal> animals = null;
 
         try {
