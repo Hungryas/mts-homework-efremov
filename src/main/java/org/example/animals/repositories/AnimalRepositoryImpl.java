@@ -1,10 +1,10 @@
-package org.example.animal.repository;
+package org.example.animals.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,8 +1,10 @@
-package org.example.animal.pet;
+package org.example.animals.pets;
 
 import com.github.javafaker.Faker;
-import org.example.animal.AbstractAnimal;
+import lombok.ToString;
+import org.example.animals.AbstractAnimal;
 
+@ToString(callSuper = true)
 public abstract class Pet extends AbstractAnimal implements StrokeCounter {
 
     protected String owner;
@@ -11,13 +13,5 @@ public abstract class Pet extends AbstractAnimal implements StrokeCounter {
         super();
         Faker faker = new Faker();
         this.owner = faker.name().fullName();
-    }
-
-    @Override
-    public String toString() {
-        return
-                super.toString() +
-                        ", owner='" + owner + '\'' +
-                        '}';
     }
 }

@@ -1,6 +1,6 @@
-package org.example.animal.repository;
+package org.example.animals.repositories;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 import java.time.LocalDate;
 import java.util.List;

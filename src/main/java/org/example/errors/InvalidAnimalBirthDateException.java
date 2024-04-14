@@ -1,6 +1,6 @@
 package org.example.errors;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 public class InvalidAnimalBirthDateException extends RuntimeException {
 
