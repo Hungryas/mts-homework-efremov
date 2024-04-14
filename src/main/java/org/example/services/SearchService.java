@@ -1,6 +1,6 @@
-package org.example.service;
+package org.example.services;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 public interface SearchService {
 

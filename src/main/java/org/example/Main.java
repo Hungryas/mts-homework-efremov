@@ -2,11 +2,11 @@ package org.example;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.time.StopWatch;
-import org.example.animal.pet.Cat;
-import org.example.animal.pet.Pet;
+import org.example.animals.pets.Cat;
+import org.example.animals.pets.Pet;
 import org.example.errors.InvalidAnimalBirthDateException;
-import org.example.service.impl.CreateAnimalServiceImpl;
-import org.example.service.impl.SearchServiceImpl;
+import org.example.services.impl.CreateAnimalServiceImpl;
+import org.example.services.impl.SearchServiceImpl;
 import org.example.utils.MathFunctions;
 
 @Log4j2
