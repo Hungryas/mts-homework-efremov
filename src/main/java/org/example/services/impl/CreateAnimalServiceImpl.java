@@ -1,7 +1,8 @@
-package org.example.service.impl;
+package org.example.services.impl;
 
-import org.example.animal.AbstractAnimal;
-import org.example.service.CreateAnimalService;
+import lombok.extern.log4j.Log4j2;
+import org.example.animals.AbstractAnimal;
+import org.example.services.CreateAnimalService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 import static org.example.utils.AnimalHelper.getRandomAnimal;
 
+@Log4j2
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
     @Override
@@ -17,11 +19,10 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
         int i = 0;
 
+        log.info("Created in 'do-while' cycle: ");
         do {
             addRandomAnimals(animals);
         } while (++i < 10);
-
-        System.out.println("Created in 'do-while' cycle: " + animals);
 
         return animals;
     }
@@ -36,17 +37,17 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         }
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
 
+        log.info("Created in 'for-i' cycle: ");
         for (int i = 0; i < number; i++) {
             addRandomAnimals(animals);
         }
-
-        System.out.println("Created in 'for-i' cycle: " + animals);
 
         return animals;
     }
 
     private void addRandomAnimals(Map<String, List<AbstractAnimal>> animals) {
         AbstractAnimal animal = getRandomAnimal();
+        log.info(animal);
         String animalType = animal.getClass().getSimpleName();
 
         if (!animals.containsKey(animalType)) {

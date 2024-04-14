@@ -1,6 +1,6 @@
-package org.example.service.impl;
+package org.example.services.impl;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +20,8 @@ class CreateAnimalServiceImplTest {
     @DisplayName("Позитивный тест createAnimals")
     void successCreateAnimals() {
         Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
-        ArrayList<AbstractAnimal> objects = collectAllAnimalsToList(animals);
-        assertThat(objects).hasSize(10);
+        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
+        assertThat(animalList).hasSize(10);
     }
 
     private ArrayList<AbstractAnimal> collectAllAnimalsToList(Map<String, List<AbstractAnimal>> animals) {
@@ -30,16 +30,16 @@ class CreateAnimalServiceImplTest {
         for (List<AbstractAnimal> animalList : animals.values()) {
             animalCollection.addAll(animalList);
         }
-        
+
         return animalCollection;
     }
 
     @Test
     @DisplayName("Позитивный тест createAnimals родителя")
-    void successCAnimalsFromDefault() {
+    void successCreateAnimalsFromDefault() {
         Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimalsFromDefault();
-        ArrayList<AbstractAnimal> objects = collectAllAnimalsToList(animals);
-        assertThat(objects).hasSize(10);
+        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
+        assertThat(animalList).hasSize(10);
     }
 
     @Test
@@ -47,8 +47,8 @@ class CreateAnimalServiceImplTest {
     void successCreateAnimalsWithNumber() {
         int number = ThreadLocalRandom.current().nextInt(1, 10);
         Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals(number);
-        ArrayList<AbstractAnimal> objects = collectAllAnimalsToList(animals);
-        assertThat(objects).hasSize(number);
+        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
+        assertThat(animalList).hasSize(number);
     }
 
     @Test

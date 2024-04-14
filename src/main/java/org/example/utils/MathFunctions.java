@@ -3,7 +3,6 @@ package org.example.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.collections4.ListUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -93,8 +92,15 @@ public class MathFunctions {
     private static <T> List<List<T>> splitListForConcurrency(List<T> range) {
         int size = range.size();
         int threads = Math.min(size, PROCESSORS);
+        int segment = Math.ceilDiv(size, threads);
+        List<List<T>> resultList = new ArrayList<>();
 
-        return ListUtils.partition(range, Math.ceilDiv(size, threads));
+        for (int start = 0; start < size; start += segment) {
+            int batch = Math.min(segment, size - start);
+            resultList.add(range.subList(start, start + batch));
+        }
+
+        return resultList;
     }
 
     private static List<BigInteger> filterPrimeNumber(List<Integer> numbers) {

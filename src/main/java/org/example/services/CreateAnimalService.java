@@ -1,6 +1,6 @@
-package org.example.service;
+package org.example.services;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ public interface CreateAnimalService {
     default Map<String, List<AbstractAnimal>> createAnimals() {
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
         int i = 0;
+        System.out.println("Created in 'while' cycle:");
 
         while (i++ < 10) {
             AbstractAnimal animal = getRandomAnimal();
@@ -24,9 +25,8 @@ public interface CreateAnimalService {
             } else {
                 animals.get(animalType).add(animal);
             }
+            System.out.println(animal);
         }
-
-        System.out.println("Created in 'while' cycle: " + animals);
 
         return animals;
     }
