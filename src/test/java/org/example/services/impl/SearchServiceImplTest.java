@@ -1,9 +1,9 @@
-package org.example.service.impl;
+package org.example.services.impl;
 
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 import org.example.errors.InvalidAnimalBirthDateException;
 import org.example.errors.InvalidAnimalException;
-import org.example.service.SearchService;
+import org.example.services.SearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package org.example.animal;
+package org.example.animals;
 
 public interface Animal {
 

@@ -1,4 +1,4 @@
-package org.example.animal.pet;
+package org.example.animals.pets;
 
 import java.util.concurrent.atomic.LongAdder;
 

@@ -1,10 +1,10 @@
-package org.example.animal.repository;
+package org.example.animals.repositories;
 
-import org.example.animal.AbstractAnimal;
-import org.example.animal.pet.Cat;
-import org.example.animal.pet.Dog;
-import org.example.animal.predator.Shark;
-import org.example.animal.predator.Wolf;
+import org.example.animals.AbstractAnimal;
+import org.example.animals.pets.Cat;
+import org.example.animals.pets.Dog;
+import org.example.animals.predators.Shark;
+import org.example.animals.predators.Wolf;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnimalRepositoryImplTest {
 
-    public static final String ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE = "Массив животных не должен быть пустым";
+    public static final String ILLEGAL_ANIMAL_LIST_ERROR_MESSAGE = "массив животных не должен быть пустым";
 
     private static final List<AbstractAnimal> animals = new ArrayList<>();
 
@@ -112,7 +112,7 @@ class AnimalRepositoryImplTest {
     void failureFindOlderAnimalWithBadAge() {
         assertThatThrownBy(() -> animalRepository.findOlderAnimal(animals, -1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Возраст не может быть отрицательным");
+                .hasMessage("возраст не может быть отрицательным");
     }
 
     @Test

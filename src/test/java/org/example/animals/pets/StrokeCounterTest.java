@@ -1,4 +1,4 @@
-package org.example.animal.pet;
+package org.example.animals.pets;
 
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
