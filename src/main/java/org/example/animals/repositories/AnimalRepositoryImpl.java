@@ -1,7 +1,7 @@
-package org.example.animal.repository;
+package org.example.animals.repositories;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
 
 import java.time.LocalDate;
 import java.util.Comparator;

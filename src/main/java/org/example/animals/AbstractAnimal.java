@@ -1,8 +1,9 @@
-package org.example.animal;
+package org.example.animals;
 
 import com.github.javafaker.Faker;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -10,6 +11,7 @@ import java.time.ZoneId;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 @Getter
+@ToString
 public class AbstractAnimal implements Animal {
 
     protected String breed;
@@ -40,15 +42,5 @@ public class AbstractAnimal implements Animal {
 
     @Override
     public void sleep() {
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{'" +
-                "breed='" + breed + '\'' +
-                ", name='" + name + '\'' +
-                ", cost=" + cost +
-                ", character='" + character + '\'' +
-                ", birthDate='" + birthDate + '\'';
     }
 }

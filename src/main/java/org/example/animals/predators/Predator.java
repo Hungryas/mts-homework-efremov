@@ -1,8 +1,10 @@
-package org.example.animal.predator;
+package org.example.animals.predators;
 
 import com.github.javafaker.Faker;
-import org.example.animal.AbstractAnimal;
+import lombok.ToString;
+import org.example.animals.AbstractAnimal;
 
+@ToString(callSuper = true)
 public abstract class Predator extends AbstractAnimal {
 
     protected String habitat;
@@ -11,12 +13,5 @@ public abstract class Predator extends AbstractAnimal {
         super();
         Faker faker = new Faker();
         this.habitat = faker.lorem().word();
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() +
-                ", habitat='" + habitat + '\'' +
-                '}';
     }
 }

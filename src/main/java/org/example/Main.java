@@ -1,11 +1,15 @@
 package org.example;
 
-import org.example.animal.pet.Cat;
-import org.example.animal.pet.Pet;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.time.StopWatch;
+import org.example.animals.pets.Cat;
+import org.example.animals.pets.Pet;
 import org.example.errors.InvalidAnimalBirthDateException;
-import org.example.service.impl.CreateAnimalServiceImpl;
-import org.example.service.impl.SearchServiceImpl;
+import org.example.services.impl.CreateAnimalServiceImpl;
+import org.example.services.impl.SearchServiceImpl;
+import org.example.utils.MathFunctions;
 
+@Log4j2
 public class Main {
 
     public static void main(String[] args) {
@@ -22,5 +26,16 @@ public class Main {
         } catch (InvalidAnimalBirthDateException e) {
             throw new InvalidAnimalBirthDateException(e.getCause());
         }
+
+        int size = 10000000;
+        StopWatch singleThreadWatch = StopWatch.createStarted();
+        MathFunctions.generateNumbersInSingleThreadMode(size);
+        singleThreadWatch.stop();
+        log.info("Время генерации {} случайных числе в один поток, мс: {}", size, singleThreadWatch.getTime());
+
+        StopWatch multiThreadedWatch = StopWatch.createStarted();
+        MathFunctions.generateNumbersInMultiThreadedMode(size);
+        multiThreadedWatch.stop();
+        log.info("Время генерации {} случайных числе в несколько потоков, мс: {}", size, multiThreadedWatch.getTime());
     }
 }
