@@ -1,8 +1,15 @@
 package org.example.animals.repositories;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
 import org.example.animals.AbstractAnimal;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -49,8 +56,27 @@ public class AnimalRepositoryImpl implements AnimalRepository {
                     .min(Comparator.comparing(animal -> animal.getBirthDate().getYear()))
                     .ifPresent(animal -> olderAnimals.put(animal, CURRENT_YEAR - animal.getBirthDate().getYear()));
         }
+        writeToFindOlderAnimalsJson(olderAnimals);
 
         return olderAnimals;
+    }
+
+    private void writeToFindOlderAnimalsJson(Map<AbstractAnimal, Integer> olderAnimals) {
+
+        try {
+            Path path = Paths.get("src", "main", "resources", "results", "findOlderAnimals.json");
+            if (!Files.exists(path)) {
+                Files.createFile(path);
+                log.info("findOlderAnimal.json успешно создан");
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            mapper.registerModule(new JavaTimeModule());
+            String jsonString = mapper.writeValueAsString(olderAnimals.keySet());
+            Files.writeString(path, jsonString);
+        } catch (IOException e) {
+            log.error("Произошла ошибка при записи findOlderAnimal.json: {}", e.getMessage());
+        }
     }
 
     @Override
