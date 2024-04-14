@@ -1,6 +1,8 @@
 package org.example.utils;
 
-import org.example.service.impl.CreateAnimalServiceImpl;
+import org.example.services.files.LogData;
+import org.example.services.files.impl.LogDataImpl;
+import org.example.services.impl.CreateAnimalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,8 @@ class LogDataHelperTest {
 
     public static final int ENTRIES_COUNT = 10;
 
+    public final LogData logData = new LogDataImpl();
+
     private final CreateAnimalServiceImpl createAnimalService = new CreateAnimalServiceImpl();
 
     @BeforeEach
@@ -24,50 +28,50 @@ class LogDataHelperTest {
 
     @Test
     @DisplayName("Позитивный тест createAnimals с очисткой файла")
-    void successClearLogDataWithClearing() {
-        LogDataHelper.clearLogData();
-        long lineCount = LogDataHelper.getLineCount();
+    void successClearWithClearing() {
+        logData.clear();
+        long lineCount = logData.getLineCount();
         assertThat(lineCount).isZero();
     }
 
     @Test
     @DisplayName("Позитивный тест createAnimals с удалением файла")
-    void successClearLogDataWithDeleting() throws IOException {
-        Files.delete(LogDataHelper.PATH);
-        LogDataHelper.clearLogData();
-        long lineCount = LogDataHelper.getLineCount();
+    void successClearWithDeleting() throws IOException {
+        Files.delete(logData.PATH);
+        logData.clear();
+        long lineCount = logData.getLineCount();
         assertThat(lineCount).isZero();
     }
 
     @Test
     @DisplayName("Позитивный тест appendLogData")
-    void successAppendLogData() {
-        LogDataHelper.appendLogData("appended_text");
-        long lineCount = LogDataHelper.getLineCount();
+    void successAppend() {
+        logData.append("appended_text");
+        long lineCount = logData.getLineCount();
         assertThat(lineCount).isEqualTo(ENTRIES_COUNT + 1);
     }
 
     @Test
     @DisplayName("Позитивный тест appendLogData записи в пустой файл")
-    void successAppendLogDataWithEmptyFile() throws IOException {
-        Files.delete(LogDataHelper.PATH);
-        LogDataHelper.appendLogData("appended_text");
-        long lineCount = LogDataHelper.getLineCount();
+    void successAppendWithEmptyFile() throws IOException {
+        Files.delete(logData.PATH);
+        logData.append("appended_text");
+        long lineCount = logData.getLineCount();
         assertThat(lineCount).isOne();
     }
 
     @Test
     @DisplayName("Позитивный тест createAnimals")
-    void readLogData() {
-        List<String> logDataList = LogDataHelper.readLogData();
-        Long lineCount = LogDataHelper.getLineCount();
+    void successRead() {
+        List<String> logDataList = logData.read();
+        Long lineCount = logData.getLineCount();
         assertThat(logDataList).hasSize(lineCount.intValue());
     }
 
     @Test
     @DisplayName("Позитивный тест getLineCount")
     void successGetLineCount() {
-        long lineCount = LogDataHelper.getLineCount();
+        long lineCount = logData.getLineCount();
         assertThat(lineCount).isEqualTo(ENTRIES_COUNT);
     }
 }

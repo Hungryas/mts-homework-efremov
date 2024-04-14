@@ -1,12 +1,11 @@
-package org.example.utils;
+package org.example.services.files.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.example.animal.AbstractAnimal;
+import org.example.animals.AbstractAnimal;
+import org.example.services.files.ResultReader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,10 +18,10 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Log4j2
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResultReader {
+public class ResultReaderImpl implements ResultReader {
 
-    public static String readSecretInformation() throws FileNotFoundException {
+    @Override
+    public String readSecretInformation() throws FileNotFoundException {
         Path path = Paths.get("src", "main", "resources", "secretStore", "secretInformation.txt");
 
         if (!Files.exists(path)) {
@@ -38,7 +37,8 @@ public class ResultReader {
         return secretInformation;
     }
 
-    public static List<AbstractAnimal> readOlderAnimals() throws FileNotFoundException {
+    @Override
+    public List<AbstractAnimal> readOlderAnimals() throws FileNotFoundException {
         File file = Paths.get("src", "main", "resources", "results", "findOlderAnimals.json").toFile();
 
         if (!file.exists()) {
