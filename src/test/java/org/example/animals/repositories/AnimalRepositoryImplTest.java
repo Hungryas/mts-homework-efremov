@@ -5,6 +5,7 @@ import org.example.animals.pets.Cat;
 import org.example.animals.pets.Dog;
 import org.example.animals.predators.Shark;
 import org.example.animals.predators.Wolf;
+import org.example.services.files.impl.ResultReaderImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -94,7 +95,7 @@ class AnimalRepositoryImplTest {
     }
 
     private void checkFindOlderAnimalsJson(Map<AbstractAnimal, Integer> olderAnimals) throws FileNotFoundException {
-        List<AbstractAnimal> abstractAnimals = ResultReader.readOlderAnimals();
+        List<AbstractAnimal> abstractAnimals = new ResultReaderImpl().readOlderAnimals();
         assertThat(olderAnimals).hasSameSizeAs(abstractAnimals);
 
         for (AbstractAnimal abstractAnimal : abstractAnimals) {

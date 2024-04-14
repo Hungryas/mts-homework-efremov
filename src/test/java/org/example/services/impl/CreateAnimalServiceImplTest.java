@@ -1,6 +1,7 @@
 package org.example.services.impl;
 
 import org.example.animals.AbstractAnimal;
+import org.example.services.files.impl.LogDataImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +38,9 @@ class CreateAnimalServiceImplTest {
     }
 
     private void checkLogData(ArrayList<AbstractAnimal> animalList) {
-        List<String> animalLogData = LogDataHelper.readLogData();
+        List<String> animalLogData = new LogDataImpl().read();
         assertThat(animalList).hasSameSizeAs(animalLogData);
-        
+
         for (String animalLog : animalLogData) {
             String[] animalProperties = animalLog.split(" ");
             boolean isMatchedAnimal = animalList.stream()

@@ -1,24 +1,19 @@
-package org.example.utils;
+package org.example.services.files.impl;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.example.services.files.LogData;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Log4j2
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class LogDataHelper {
+public class LogDataImpl implements LogData {
 
-    public static final Path PATH = Paths.get("src", "main", "resources", "animals", "logData.txt");
-
-    public static void clearLogData() {
+    @Override
+    public void clear() {
         try {
             if (!Files.exists(PATH)) {
                 Files.createFile(PATH);
@@ -32,7 +27,8 @@ public class LogDataHelper {
         }
     }
 
-    public static void appendLogData(String string) {
+    @Override
+    public void append(String string) {
         try {
             if (!Files.exists(PATH)) {
                 Files.createFile(PATH);
@@ -43,7 +39,8 @@ public class LogDataHelper {
         }
     }
 
-    public static List<String> readLogData() {
+    @Override
+    public List<String> read() {
         List<String> logData = null;
 
         try {
@@ -54,7 +51,8 @@ public class LogDataHelper {
         return logData;
     }
 
-    public static long getLineCount() {
+    @Override
+    public long getLineCount() {
         long lineCount = 0;
 
         try (Stream<String> lines = Files.lines(PATH)) {
