@@ -1,7 +1,7 @@
 package org.example.animals.pets;
 
-import com.github.javafaker.Faker;
 import lombok.ToString;
+import net.datafaker.Faker;
 import org.example.animals.AbstractAnimal;
 
 @ToString(callSuper = true)

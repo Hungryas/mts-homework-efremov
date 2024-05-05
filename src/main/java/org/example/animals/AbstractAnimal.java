@@ -1,10 +1,10 @@
 package org.example.animals;
 
-import com.github.javafaker.Faker;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.ToString;
+import net.datafaker.Faker;
 import org.example.services.files.impl.ResultReaderImpl;
 
 import java.time.LocalDate;
