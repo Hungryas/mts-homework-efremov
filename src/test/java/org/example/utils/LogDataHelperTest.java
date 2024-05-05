@@ -1,11 +1,12 @@
 package org.example.utils;
 
 import org.example.services.files.LogData;
-import org.example.services.files.impl.LogDataImpl;
 import org.example.services.impl.CreateAnimalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,13 +14,16 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 class LogDataHelperTest {
 
-    public static final int ENTRIES_COUNT = 10;
+    private static final int ENTRIES_COUNT = 10;
 
-    public final LogData logData = new LogDataImpl();
+    @Autowired
+    private LogData logData;
 
-    private final CreateAnimalServiceImpl createAnimalService = new CreateAnimalServiceImpl();
+    @Autowired
+    private CreateAnimalServiceImpl createAnimalService;
 
     @BeforeEach
     void createLogData() {

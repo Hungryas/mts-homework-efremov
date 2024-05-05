@@ -1,9 +1,15 @@
 package org.example.services.impl;
 
+import org.example.DemoTestConfig;
 import org.example.animals.AbstractAnimal;
 import org.example.services.files.impl.LogDataImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +20,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest
+@Import(DemoTestConfig.class)
+@TestPropertySource(locations = "/application-test.properties", properties = "scheduler.enabled=false")
 class CreateAnimalServiceImplTest {
 
-    private final CreateAnimalServiceImpl createAnimalService = new CreateAnimalServiceImpl();
+    @Autowired
+    @Qualifier("testCreateAnimalService")
+    private CreateAnimalServiceImpl createAnimalService;
 
     @Test
     @DisplayName("Позитивный тест createAnimals")

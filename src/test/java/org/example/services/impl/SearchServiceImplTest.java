@@ -6,6 +6,8 @@ import org.example.errors.InvalidAnimalException;
 import org.example.services.SearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,9 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.example.utils.AnimalHelper.getRandomAnimal;
 
+@SpringBootTest
 class SearchServiceImplTest {
 
-    private final SearchService searchService = new SearchServiceImpl();
+    @Autowired
+    private SearchService searchService;
 
     private final AbstractAnimal animal = getRandomAnimal();
 
