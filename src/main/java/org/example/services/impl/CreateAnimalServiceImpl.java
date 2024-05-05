@@ -33,6 +33,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     private Map<String, List<AbstractAnimal>> animals;
 
     @Override
+    @Scheduled(cron = "${interval-in-cron}")
     public Map<String, List<AbstractAnimal>> createAnimals() {
         logData.clear();
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
