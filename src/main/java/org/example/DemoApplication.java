@@ -5,20 +5,27 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.example.animals.pets.Cat;
 import org.example.animals.pets.Pet;
 import org.example.errors.InvalidAnimalBirthDateException;
+import org.example.services.SearchService;
 import org.example.services.impl.CreateAnimalServiceImpl;
-import org.example.services.impl.SearchServiceImpl;
 import org.example.utils.MathFunctions;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @Log4j2
-public class Main {
+@SpringBootApplication
+public class DemoApplication {
 
     public static void main(String[] args) {
-        CreateAnimalServiceImpl createAnimalService = new CreateAnimalServiceImpl();
+        ApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);
+
+        CreateAnimalServiceImpl createAnimalService = context.getBean("createAnimalService", CreateAnimalServiceImpl.class);
         createAnimalService.createAnimalsFromDefault();
         createAnimalService.createAnimals();
         createAnimalService.createAnimals(10);
 
-        SearchServiceImpl searchService = new SearchServiceImpl();
+        SearchService searchService = context.getBean(SearchService.class);
         Pet pet = new Cat();
 
         try {
@@ -37,5 +44,7 @@ public class Main {
         MathFunctions.generateNumbersInMultiThreadedMode(size);
         multiThreadedWatch.stop();
         log.info("Время генерации {} случайных числе в несколько потоков, мс: {}", size, multiThreadedWatch.getTime());
+
+        SpringApplication.run(SchedulerConfig.class, args);
     }
 }

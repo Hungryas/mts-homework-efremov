@@ -4,7 +4,9 @@ import org.example.animals.AbstractAnimal;
 import org.example.errors.InvalidAnimalBirthDateException;
 import org.example.errors.InvalidAnimalException;
 import org.example.services.SearchService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SearchServiceImpl implements SearchService {
 
     @Override

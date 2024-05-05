@@ -1,10 +1,15 @@
-package org.example.animals.repositories;
+package org.example.animals.repositories.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.example.animals.AbstractAnimal;
+import org.example.animals.repositories.AnimalRepository;
+import org.example.services.CreateAnimalService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,9 +26,18 @@ import static org.example.errors.Error.ILLEGAL_EMPTY;
 import static org.example.errors.Error.ILLEGAL_NEGATIVE;
 
 @Log4j2
+@Repository
 public class AnimalRepositoryImpl implements AnimalRepository {
 
     private static final int CURRENT_YEAR = LocalDate.now().getYear();
+
+    @Autowired
+    private CreateAnimalService createAnimalService;
+
+    @PostConstruct
+    private void createAnimals() {
+        createAnimalService.createAnimals();
+    }
 
     @Override
     public Map<String, LocalDate> findLeapYearNames(List<AbstractAnimal> animals) {

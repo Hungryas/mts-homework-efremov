@@ -4,7 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.example.animals.AbstractAnimal;
 import org.example.services.CreateAnimalService;
 import org.example.services.files.LogData;
-import org.example.services.files.impl.LogDataImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +20,17 @@ import java.util.stream.Stream;
 import static org.example.utils.AnimalHelper.getRandomAnimal;
 
 @Log4j2
+@Service
+@PropertySource("/application.properties")
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
-    private final LogData logData = new LogDataImpl();
+    @Autowired
+    private LogData logData;
+
+    @Value("#{'${animal.cat.names}'.split(',')}")
+    private List<String> names;
+
+    private Map<String, List<AbstractAnimal>> animals;
 
     @Override
     public Map<String, List<AbstractAnimal>> createAnimals() {

@@ -2,6 +2,7 @@ package org.example.services.files.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.example.services.files.LogData;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Log4j2
+@Component
 public class LogDataImpl implements LogData {
 
     @Override

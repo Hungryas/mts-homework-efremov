@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
 import org.example.animals.AbstractAnimal;
 import org.example.services.files.ResultReader;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Log4j2
+@Component
 public class ResultReaderImpl implements ResultReader {
 
     @Override

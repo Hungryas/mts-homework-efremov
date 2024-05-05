@@ -14,7 +14,6 @@ public interface CreateAnimalService {
     default Map<String, List<AbstractAnimal>> createAnimals() {
         Map<String, List<AbstractAnimal>> animals = new HashMap<>();
         int i = 0;
-        System.out.println("Created in 'while' cycle:");
 
         while (i++ < 10) {
             AbstractAnimal animal = getRandomAnimal();
@@ -25,9 +24,10 @@ public interface CreateAnimalService {
             } else {
                 animals.get(animalType).add(animal);
             }
-            System.out.println(animal);
         }
 
         return animals;
     }
+
+    Map<String, List<AbstractAnimal>> createAnimals(int number);
 }
