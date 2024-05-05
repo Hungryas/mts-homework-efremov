@@ -11,7 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,41 +37,52 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     @Override
     @Scheduled(cron = "${interval-in-cron}")
     public Map<String, List<AbstractAnimal>> createAnimals() {
+        final int number = 10;
         logData.clear();
-        Map<String, List<AbstractAnimal>> animals = new HashMap<>();
+        animals = new HashMap<>();
         int i = 0;
 
-        log.info("Created in 'do-while' cycle: ");
         do {
             logData.append(String.valueOf(++i));
-            addRandomAnimals(animals);
-        } while (i < 10);
+            addRandomAnimal();
+        } while (i < number);
+        setPredefinedNames();
+        log.info("Created {} in 'do-while' cycle: ", number);
+        logAnimals();
 
         return animals;
     }
 
     public Map<String, List<AbstractAnimal>> createAnimalsFromDefault() {
-        return CreateAnimalService.super.createAnimals();
+        animals = CreateAnimalService.super.createAnimals();
+        setPredefinedNames();
+        log.info("Created {} in 'while' cycle:", animals.size());
+        logAnimals();
+
+        return animals;
     }
 
+    @Override
     public Map<String, List<AbstractAnimal>> createAnimals(int number) {
         if (number < 1) {
             throw new IllegalArgumentException("Количество животных должно быть положительным");
         }
         logData.clear();
-        Map<String, List<AbstractAnimal>> animals = new HashMap<>();
+        animals = new HashMap<>();
 
-        log.info("Created in 'for-i' cycle: ");
         for (int i = 0; i < number; i++) {
-            addRandomAnimals(animals);
+            logData.append(String.valueOf(i + 1));
+            addRandomAnimal();
         }
+        setPredefinedNames();
+        log.info("Created {} in 'for-i' cycle: ", number);
+        logAnimals();
 
         return animals;
     }
 
-    private void addRandomAnimals(Map<String, List<AbstractAnimal>> animals) {
+    private void addRandomAnimal() {
         AbstractAnimal animal = getRandomAnimal();
-        log.info(animal);
         String animalType = animal.getClass().getSimpleName();
 
         String animalData = Stream.of(animalType, animal.getName(), animal.getCost(), animal.getBirthDate())
@@ -82,5 +95,24 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         } else {
             animals.get(animalType).add(animal);
         }
+    }
+
+    private void setPredefinedNames() {
+        Iterator<AbstractAnimal> animalIterator = animals.values().stream()
+                .flatMap(List::stream)
+                .toList().iterator();
+        Collections.shuffle(names);
+        Iterator<String> defineNamesIterator = new ArrayList<>(names).iterator();
+
+        while (animalIterator.hasNext() && defineNamesIterator.hasNext()) {
+            String name = defineNamesIterator.next();
+            animalIterator.next().setName(name);
+        }
+    }
+
+    private void logAnimals() {
+        animals.values().stream()
+                .flatMap(List::stream)
+                .forEach(log::info);
     }
 }
