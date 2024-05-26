@@ -1,6 +1,5 @@
 .gradle/
 .idea/
-.PVS-Studio/
 build/
 out/
 src/main/resources/animals/

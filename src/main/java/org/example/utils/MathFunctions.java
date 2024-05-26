@@ -18,18 +18,19 @@ import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.example.errors.Error.ILLEGAL_NEGATIVE;
-import static org.example.errors.Error.ILLEGAL_ZERO;
-
 @Log4j2
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MathFunctions {
+
+    private static final String ILLEGAL_NEGATIVE_ERROR_MESSAGE = "число не может быть отрицательным";
+
+    private static final String ILLEGAL_ZERO_ERROR_MESSAGE = "число должно быть больше 0";
 
     public static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
 
     public static BigInteger factorial(int number) {
         if (number < 0) {
-            throw new IllegalArgumentException(ILLEGAL_NEGATIVE.messageWith("число"));
+            throw new IllegalArgumentException(ILLEGAL_NEGATIVE_ERROR_MESSAGE);
         } else if (number < 2) {
             return BigInteger.ONE;
         } else if (number == 2) {
@@ -45,7 +46,7 @@ public class MathFunctions {
 
     public static List<BigInteger> fibonacciSequence(int number) {
         if (number < 0) {
-            throw new IllegalArgumentException(ILLEGAL_NEGATIVE.messageWith("число"));
+            throw new IllegalArgumentException(ILLEGAL_NEGATIVE_ERROR_MESSAGE);
         }
 
         return IntStream.rangeClosed(0, number)
@@ -68,7 +69,7 @@ public class MathFunctions {
 
     public static List<BigInteger> primeNumbersFromRange(int start, int end) {
         if (start < 0 || end < 0) {
-            throw new IllegalArgumentException(ILLEGAL_NEGATIVE.messageWith("число"));
+            throw new IllegalArgumentException(ILLEGAL_NEGATIVE_ERROR_MESSAGE);
         }
         if (start > end) {
             throw new IllegalArgumentException("начало диапазона должно быть меньше конца");
@@ -113,7 +114,7 @@ public class MathFunctions {
 
     public static List<Long> generateNumbersInSingleThreadMode(int size) {
         if (size < 0) {
-            throw new IllegalArgumentException(ILLEGAL_ZERO.message());
+            throw new IllegalArgumentException(ILLEGAL_ZERO_ERROR_MESSAGE);
         }
 
         return Stream.generate(() -> RandomGenerator.getDefault().nextLong())
@@ -123,7 +124,7 @@ public class MathFunctions {
 
     public static List<Long> generateNumbersInMultiThreadedMode(int size) {
         if (size < 1) {
-            throw new IllegalArgumentException(ILLEGAL_ZERO.message());
+            throw new IllegalArgumentException(ILLEGAL_ZERO_ERROR_MESSAGE);
         }
 
         try (ExecutorService executor = Executors.newCachedThreadPool()) {

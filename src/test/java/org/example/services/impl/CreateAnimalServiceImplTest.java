@@ -1,7 +1,8 @@
 package org.example.services.impl;
 
-import org.example.DemoTestConfig;
+import org.example.TestConfig;
 import org.example.animals.AbstractAnimal;
+import org.example.services.CreateAnimalService;
 import org.example.services.files.impl.LogDataImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@Import(DemoTestConfig.class)
-@TestPropertySource(locations = "/application-test.properties", properties = "scheduler.enabled=false")
+@Import(TestConfig.class)
+@TestPropertySource(properties = "scheduler.enabled=false")
 class CreateAnimalServiceImplTest {
 
     @Autowired
     @Qualifier("testCreateAnimalService")
-    private CreateAnimalServiceImpl createAnimalService;
+    private CreateAnimalService createAnimalService;
 
     @Test
     @DisplayName("Позитивный тест createAnimals")
@@ -61,15 +62,6 @@ class CreateAnimalServiceImplTest {
                             Objects.equals(animal.getBirthDate().toString(), animalProperties[4]));
             assertThat(isMatchedAnimal).isTrue();
         }
-    }
-
-    @Test
-    @DisplayName("Позитивный тест createAnimals родителя")
-    void successCreateAnimalsFromDefault() {
-        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimalsFromDefault();
-        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
-        assertThat(animalList).hasSize(10);
-        checkLogData(animalList);
     }
 
     @Test

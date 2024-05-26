@@ -6,7 +6,6 @@ import org.example.services.CreateAnimalService;
 import org.example.services.files.LogData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +22,12 @@ import static org.example.utils.AnimalHelper.getRandomAnimal;
 
 @Log4j2
 @Service
-@PropertySource("/application.properties")
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
     @Autowired
     private LogData logData;
 
-    @Value("#{'${animal.cat.names}'.split(',')}")
+    @Value("#{'${animal.names}'.split(',')}")
     private List<String> names;
 
     private Map<String, List<AbstractAnimal>> animals;
@@ -48,15 +46,6 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         } while (i < number);
         setPredefinedNames();
         log.info("Created {} in 'do-while' cycle: ", number);
-        logAnimals();
-
-        return animals;
-    }
-
-    public Map<String, List<AbstractAnimal>> createAnimalsFromDefault() {
-        animals = CreateAnimalService.super.createAnimals();
-        setPredefinedNames();
-        log.info("Created {} in 'while' cycle:", animals.size());
         logAnimals();
 
         return animals;
