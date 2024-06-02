@@ -21,7 +21,7 @@ public class SearchServiceImpl implements SearchService {
         if (animal.getBirthDate().isLeapYear()) {
             System.out.println(animal.getName() + " был рожден в високосный год");
         } else {
-            System.out.println(animal.getName() + " не был рожден в високосный год");
+            System.out.println(animal.getName() + " был рожден в невисокосный год");
         }
     }
 }
