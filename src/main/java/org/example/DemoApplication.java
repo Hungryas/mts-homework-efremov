@@ -2,23 +2,23 @@ package org.example;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.time.StopWatch;
-import org.example.animals.pets.Cat;
-import org.example.animals.pets.Pet;
-import org.example.errors.InvalidAnimalBirthDateException;
-import org.example.services.CreateAnimalService;
-import org.example.services.SearchService;
-import org.example.services.impl.CreateAnimalServiceImpl;
 import org.example.utils.MathFunctions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.starter.animals.pets.Cat;
+import org.starter.animals.pets.Pet;
+import org.starter.errors.InvalidAnimalBirthDateException;
+import org.starter.services.CreateAnimalService;
+import org.starter.services.SearchService;
+import org.starter.services.impl.CreateAnimalServiceImpl;
 
 @Log4j2
 @SpringBootApplication
 public class DemoApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run((DemoApplication.class));
+        ApplicationContext context = SpringApplication.run(DemoApplication.class);
         CreateAnimalService createAnimalService = context.getBean("createAnimalService", CreateAnimalServiceImpl.class);
         createAnimalService.createAnimals();
         createAnimalService.createAnimals(10);

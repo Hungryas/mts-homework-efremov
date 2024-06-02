@@ -1,13 +1,13 @@
 package org.example.utils;
 
-import org.example.animals.AbstractAnimal;
-import org.example.animals.pets.Cat;
-import org.example.animals.repositories.impl.AnimalRepositoryImpl;
-import org.example.services.files.ResultReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.starter.animals.AbstractAnimal;
+import org.starter.animals.pets.Cat;
+import org.starter.animals.repositories.impl.AnimalRepositoryImpl;
+import org.starter.services.files.ResultReader;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;

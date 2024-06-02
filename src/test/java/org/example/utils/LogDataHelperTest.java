@@ -1,12 +1,12 @@
 package org.example.utils;
 
-import org.example.services.files.LogData;
-import org.example.services.impl.CreateAnimalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.starter.services.files.LogData;
+import org.starter.services.impl.CreateAnimalServiceImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;

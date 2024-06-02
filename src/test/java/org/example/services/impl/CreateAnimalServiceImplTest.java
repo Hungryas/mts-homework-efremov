@@ -1,9 +1,6 @@
 package org.example.services.impl;
 
 import org.example.TestConfig;
-import org.example.animals.AbstractAnimal;
-import org.example.services.CreateAnimalService;
-import org.example.services.files.impl.LogDataImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.starter.animals.AbstractAnimal;
+import org.starter.services.CreateAnimalService;
+import org.starter.services.files.impl.LogDataImpl;
 
 import java.util.ArrayList;
 import java.util.List;

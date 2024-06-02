@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.starter.animals.pets.Cat;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,11 +1,5 @@
 package org.example.animals.repositories;
 
-import org.example.animals.AbstractAnimal;
-import org.example.animals.pets.Cat;
-import org.example.animals.pets.Dog;
-import org.example.animals.predators.Shark;
-import org.example.animals.predators.Wolf;
-import org.example.services.files.impl.ResultReaderImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +7,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.starter.animals.AbstractAnimal;
+import org.starter.animals.pets.Cat;
+import org.starter.animals.pets.Dog;
+import org.starter.animals.predators.Shark;
+import org.starter.animals.predators.Wolf;
+import org.starter.animals.repositories.AnimalRepository;
+import org.starter.services.files.impl.ResultReaderImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
