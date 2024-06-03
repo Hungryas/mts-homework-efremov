@@ -4,3 +4,20 @@ interval-in-cron: 0 * * * * *
 logging:
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n'
+spring:
+  application:
+    name: demo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    hikari:
+      schema: animals
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS "animals";
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yaml
+    default-schema: animals
