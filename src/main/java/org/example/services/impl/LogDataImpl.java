@@ -1,8 +1,8 @@
-package org.starter.services.files.impl;
+package org.example.services.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.services.LogData;
 import org.springframework.stereotype.Component;
-import org.starter.services.files.LogData;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,12 +1,12 @@
-package org.starter.services.files.impl;
+package org.example.services.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
+import org.example.entities.Animal;
+import org.example.services.ResultReader;
 import org.springframework.stereotype.Component;
-import org.starter.animals.AbstractAnimal;
-import org.starter.services.files.ResultReader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +27,7 @@ public class ResultReaderImpl implements ResultReader {
         Path path = Paths.get("src", "main", "resources", "secretStore", "secretInformation.txt");
 
         if (!Files.exists(path)) {
-            throw new FileNotFoundException("secretInformation.txt существует");
+            throw new FileNotFoundException("secretInformation.txt не существует");
         }
         String secretInformation = "";
 
@@ -40,7 +40,7 @@ public class ResultReaderImpl implements ResultReader {
     }
 
     @Override
-    public List<AbstractAnimal> readOlderAnimals() throws FileNotFoundException {
+    public List<Animal> readOlderAnimals() throws FileNotFoundException {
         File file = Paths.get("src", "main", "resources", "results", "findOlderAnimals.json").toFile();
 
         if (!file.exists()) {
@@ -48,7 +48,7 @@ public class ResultReaderImpl implements ResultReader {
         }
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        List<AbstractAnimal> animals = null;
+        List<Animal> animals = null;
 
         try {
             animals = mapper.readValue(file, new TypeReference<>() {
