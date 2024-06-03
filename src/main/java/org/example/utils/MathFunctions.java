@@ -142,8 +142,11 @@ public class MathFunctions {
             for (Future<List<Long>> future : futures) {
                 try {
                     resultList.addAll(future.get());
-                } catch (InterruptedException | ExecutionException e) {
-                    log.debug(e.getMessage());
+                } catch (InterruptedException e) {
+                    log.warn("Interrupted!", e);
+                    Thread.currentThread().interrupt();
+                } catch (ExecutionException e) {
+                    log.error(e.getMessage());
                 }
             }
             return resultList;
