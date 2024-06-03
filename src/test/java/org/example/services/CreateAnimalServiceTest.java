@@ -1,17 +1,16 @@
-package org.example.services.impl;
+package org.example.services;
 
 import org.example.TestConfig;
+import org.example.entities.Animal;
+import org.example.services.impl.LogDataImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
-import org.starter.animals.AbstractAnimal;
-import org.starter.services.CreateAnimalService;
-import org.starter.services.files.impl.LogDataImpl;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Import(TestConfig.class)
-@TestPropertySource(properties = "scheduler.enabled=false")
-class CreateAnimalServiceImplTest {
+class CreateAnimalServiceTest {
 
     @Autowired
     @Qualifier("testCreateAnimalService")
@@ -32,24 +30,24 @@ class CreateAnimalServiceImplTest {
 
     @Test
     @DisplayName("Позитивный тест createAnimals")
-    void successCreateAnimals() {
-        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals();
-        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
+    void successCreateAnimals() throws FileNotFoundException {
+        Map<String, List<Animal>> animals = createAnimalService.createAnimals();
+        ArrayList<Animal> animalList = collectAllAnimalsToList(animals);
         assertThat(animalList).hasSize(10);
         checkLogData(animalList);
     }
 
-    private ArrayList<AbstractAnimal> collectAllAnimalsToList(Map<String, List<AbstractAnimal>> animals) {
-        ArrayList<AbstractAnimal> animalCollection = new ArrayList<>();
+    private ArrayList<Animal> collectAllAnimalsToList(Map<String, List<Animal>> animals) {
+        ArrayList<Animal> animalCollection = new ArrayList<>();
 
-        for (List<AbstractAnimal> animalList : animals.values()) {
+        for (List<Animal> animalList : animals.values()) {
             animalCollection.addAll(animalList);
         }
 
         return animalCollection;
     }
 
-    private void checkLogData(ArrayList<AbstractAnimal> animalList) {
+    private void checkLogData(ArrayList<Animal> animalList) {
         List<String> animalLogData = new LogDataImpl().read();
         assertThat(animalList).hasSameSizeAs(animalLogData);
 
@@ -66,10 +64,10 @@ class CreateAnimalServiceImplTest {
 
     @Test
     @DisplayName("Позитивный тест createAnimals с указанием количества")
-    void successCreateAnimalsWithNumber() {
+    void successCreateAnimalsWithNumber() throws FileNotFoundException {
         int number = ThreadLocalRandom.current().nextInt(1, 10);
-        Map<String, List<AbstractAnimal>> animals = createAnimalService.createAnimals(number);
-        ArrayList<AbstractAnimal> animalList = collectAllAnimalsToList(animals);
+        Map<String, List<Animal>> animals = createAnimalService.createAnimals(number);
+        ArrayList<Animal> animalList = collectAllAnimalsToList(animals);
         assertThat(animalList).hasSize(number);
         checkLogData(animalList);
     }

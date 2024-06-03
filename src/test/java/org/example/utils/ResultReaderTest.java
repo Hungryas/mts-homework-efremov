@@ -1,26 +1,31 @@
 package org.example.utils;
 
+import org.example.TestConfig;
+import org.example.entities.Animal;
+import org.example.services.AnimalSearchService;
+import org.example.services.ResultReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.starter.animals.AbstractAnimal;
-import org.starter.animals.pets.Cat;
-import org.starter.animals.repositories.impl.AnimalRepositoryImpl;
-import org.starter.services.files.ResultReader;
+import org.springframework.context.annotation.Import;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Import(TestConfig.class)
 class ResultReaderTest {
 
     @Autowired
     private ResultReader resultReader;
+
+    @Autowired
+    private AnimalSearchService animalSearchService;
 
     @Test
     @DisplayName("Позитивный тест readSecretInformation")
@@ -31,20 +36,22 @@ class ResultReaderTest {
 
     @Test
     @DisplayName("Позитивный тест readOlderAnimals")
-    void successReadSOlderAnimals() throws FileNotFoundException {
-        Cat cat = new Cat();
-        cat.setBirthDate(LocalDate.of(2000, 1, 1));
-        new AnimalRepositoryImpl().findOlderAnimal(List.of(cat), 1);
-        List<AbstractAnimal> abstractAnimals = resultReader.readOlderAnimals();
-        assertThat(abstractAnimals).hasSize(1);
+    void successReadOlderAnimals() throws FileNotFoundException {
+        int age = ThreadLocalRandom.current().nextInt(15);
+        Set<Animal> expectedAnimals = animalSearchService.findOlderAnimal(age).keySet();
+        List<Animal> actualAnimals = resultReader.readOlderAnimals();
+        assertThat(actualAnimals).hasSameSizeAs(expectedAnimals);
 
-        boolean isMatched = abstractAnimals.stream()
-                .allMatch(animal -> Objects.equals(animal.getName(), cat.getName()) &&
-                        Objects.equals(animal.getBreed(), cat.getBreed()) &&
-                        Objects.equals(animal.getCost(), cat.getCost()) &&
-                        Objects.equals(animal.getCharacter(), cat.getCharacter()) &&
-                        Objects.equals(animal.getBirthDate(), cat.getBirthDate()) &&
-                        Objects.equals(animal.getSecretInformation(), cat.getSecretInformation()));
-        assertThat(isMatched).isTrue();
+        for (Animal actualAnimal : actualAnimals) {
+            Animal expectedAnimal = expectedAnimals.stream()
+                    .filter(animal -> animal.getName().equals(actualAnimal.getName()))
+                    .findFirst().orElseThrow();
+            assertThat(actualAnimal.getId()).isEqualTo(expectedAnimal.getId());
+            assertThat(actualAnimal.getCost()).isEqualTo(expectedAnimal.getCost());
+            assertThat(actualAnimal.getName()).isEqualTo(expectedAnimal.getName());
+            assertThat(actualAnimal.getBreed()).isEqualTo(expectedAnimal.getBreed());
+            assertThat(actualAnimal.getCharacter()).isEqualTo(expectedAnimal.getCharacter());
+            assertThat(actualAnimal.getBirthDate()).isEqualTo(expectedAnimal.getBirthDate());
+        }
     }
 }
