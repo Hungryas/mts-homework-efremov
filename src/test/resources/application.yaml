@@ -1,0 +1,20 @@
+animal:
+  names: Tim,Taylor,Tina,Teodoro,Tracee,Toby,Tonia,Theo,Tiffany,Terrence
+scheduler:
+  enabled: false
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url:
+      jdbc:tc:postgresql:alpine:///postgres
+    hikari:
+      schema: animals
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS "animals";
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  liquibase:
+    enabled: false
