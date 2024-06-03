@@ -1,7 +1,10 @@
 package org.example.animals.pets;
 
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.starter.animals.pets.Cat;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,12 +15,14 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Log4j2
+@SpringBootTest
 class StrokeCounterTest {
 
     private final Cat cat = new Cat();
 
     @Test
-    void successCountSum() {
+    @DisplayName("Позитивный тест strokeSum")
+    void successStrokeSum() {
         int guests = RandomGenerator.getDefault().nextInt(1, 5);
         log.debug("guests: {}", guests);
         int strokesByOne = RandomGenerator.getDefault().nextInt(10, 100);

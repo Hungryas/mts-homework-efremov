@@ -1,2 +1,3 @@
 rootProject.name = "mts-homework-efremov"
+include 'animals-spring-boot-starter'
 
