@@ -1,4 +1,4 @@
-package org.starter.errors;
+package org.example.errors;
 
 import java.time.LocalDate;
 
