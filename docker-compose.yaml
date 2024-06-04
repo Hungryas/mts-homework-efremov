@@ -1,24 +1,32 @@
 version: '3'
 services:
   postgres:
-    image: postgres
+    image: postgres:latest
     restart: always
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
-      POSTGRES_DB: animals_test
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - animals_test:/var/lib/postgresql/data
+      # volume to persist data
+      - postgres:/var/lib/postgresql/data
+      # init scripts directory
+      # - ./init.sql:/docker-initdb.d
+      # init script
+      # - ./init.sql:/docker-initdb.d/init.sql
   pgadmin:
     image: dpage/pgadmin4
     ports:
-      - "80:80"
+      - '5050:80'
     depends_on:
       - postgres
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@mydomain.com
       - PGADMIN_DEFAULT_PASSWORD=postgres
+    volumes:
+      - pgadmin:/var/lib/pgadmin
 volumes:
-  animals_test:
+  postgres:
+  pgadmin:

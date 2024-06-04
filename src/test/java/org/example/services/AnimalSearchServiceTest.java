@@ -1,13 +1,16 @@
-package org.example.repositories;
+package org.example.services;
 
 import org.example.TestConfig;
 import org.example.entities.Animal;
 import org.example.entities.AnimalType;
-import org.example.services.AnimalSearchService;
+import org.example.repositories.AnimalRepository;
+import org.example.repositories.AnimalTypeRepository;
 import org.example.services.impl.ResultReaderImpl;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -16,44 +19,49 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Import(TestConfig.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnimalSearchServiceTest {
 
-    private static final AnimalType catType = new AnimalType();
+    private final Animal cat1 = new Animal();
 
-    private static final AnimalType dogType = new AnimalType();
+    private final Animal cat2 = new Animal();
 
-    private static final AnimalType wolfType = new AnimalType();
+    private final Animal dog1 = new Animal();
 
-    private static final Animal cat1 = new Animal();
+    private final Animal dog2 = new Animal();
 
-    private static final Animal cat2 = new Animal();
-
-    private static final Animal dog1 = new Animal();
-
-    private static final Animal dog2 = new Animal();
-
-    private static final Animal wolf = new Animal();
+    private final Animal wolf = new Animal();
 
     @Autowired
     private AnimalSearchService animalSearchService;
 
+    @Autowired
+    private AnimalTypeRepository animalTypeRepository;
+
+    @Autowired
+    private AnimalRepository animalRepository;
+
     @BeforeAll
-    static void setup() {
+    void setup() {
+        AnimalType catType = new AnimalType();
         catType.setName("cat");
         catType.setIsPredator(true);
 
+        AnimalType dogType = new AnimalType();
         dogType.setName("dog");
         dogType.setIsPredator(true);
 
+        AnimalType wolfType = new AnimalType();
         wolfType.setName("wolf");
         wolfType.setIsPredator(true);
+
+        animalTypeRepository.saveAll(List.of(catType, dogType, wolfType));
 
         cat1.setName("Alysha");
         cat1.setType(catType);
@@ -79,6 +87,14 @@ class AnimalSearchServiceTest {
         wolf.setType(wolfType);
         wolf.setCost(1000);
         wolf.setBirthDate(LocalDate.of(2024, 1, 1));
+
+        animalRepository.saveAll(List.of(cat1, cat2, dog1, dog2, wolf));
+    }
+
+    @AfterAll
+    void teardown() {
+        animalRepository.deleteAll();
+        animalTypeRepository.deleteAll();
     }
 
     @Test
@@ -94,25 +110,14 @@ class AnimalSearchServiceTest {
     void successFindOlderAnimals() throws FileNotFoundException {
         int age = LocalDate.now().getYear() - wolf.getBirthDate().getYear();
         Map<Animal, Integer> olderAnimals = animalSearchService.findOlderAnimal(age);
-        assertThat(olderAnimals).hasSize(4)
+        assertThat(olderAnimals).containsKeys(cat1, cat2, dog1, dog2)
                 .doesNotContainKey(wolf);
         checkFindOlderAnimalsJson(olderAnimals);
     }
 
     private void checkFindOlderAnimalsJson(Map<Animal, Integer> olderAnimals) throws FileNotFoundException {
         List<Animal> animalsFromFile = new ResultReaderImpl().readOlderAnimals();
-        assertThat(olderAnimals).hasSameSizeAs(animalsFromFile);
-
-        for (Animal animalFromFile : animalsFromFile) {
-            boolean isMatchedAnimal = olderAnimals.keySet().stream()
-                    .filter(animal -> animal.getName().equals(animalFromFile.getName()))
-                    .allMatch(animal -> Objects.equals(animal.getBreed(), animalFromFile.getBreed()) &&
-                            Objects.equals(animal.getCost(), animalFromFile.getCost()) &&
-                            Objects.equals(animal.getCharacter(), animalFromFile.getCharacter()) &&
-                            Objects.equals(animal.getBirthDate(), animalFromFile.getBirthDate()) &&
-                            Objects.equals(animal.getSecretInformation(), animalFromFile.getSecretInformation()));
-            assertThat(isMatchedAnimal).isTrue();
-        }
+        assertThat(olderAnimals).containsOnlyKeys(animalsFromFile);
     }
 
     @Test
@@ -120,7 +125,8 @@ class AnimalSearchServiceTest {
     void successFindOlderAnimalOfPossible() throws FileNotFoundException {
         Map<Animal, Integer> olderAnimals = animalSearchService.findOlderAnimal(Integer.MAX_VALUE);
         int expectedAge = LocalDate.now().getYear() - cat1.getBirthDate().getYear();
-        assertThat(olderAnimals).containsValues(expectedAge);
+        assertThat(olderAnimals).containsValues(expectedAge)
+                .containsKey(cat1);
         checkFindOlderAnimalsJson(olderAnimals);
     }
 
@@ -136,9 +142,9 @@ class AnimalSearchServiceTest {
     @DisplayName("Позитивный тест findDuplicate")
     void successFindDuplicate() {
         Map<String, List<Animal>> duplicates = animalSearchService.findDuplicate();
-        assertThat(duplicates.get("cat")).hasSize(2);
-        assertThat(duplicates.get("dog")).hasSize(2);
-        assertThat(duplicates.get("wolf")).hasSize(1);
+        assertThat(duplicates.get("cat")).containsOnly(cat1, cat2);
+        assertThat(duplicates.get("dog")).containsOnly(dog1, dog2);
+        assertThat(duplicates.get("wolf")).containsOnly(wolf);
     }
 
     @Test
@@ -152,8 +158,7 @@ class AnimalSearchServiceTest {
     @DisplayName("Позитивный тест findOldAndExpensive")
     void successFindOldAndExpensive() {
         List<Animal> oldAndExpensiveAnimals = animalSearchService.findOldAndExpensive();
-        assertThat(oldAndExpensiveAnimals).hasSize(1);
-        assertThat(oldAndExpensiveAnimals.getFirst().getCost()).isEqualTo(dog2.getCost());
+        assertThat(oldAndExpensiveAnimals).containsOnly(dog2);
     }
 
     @Test

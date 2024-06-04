@@ -19,20 +19,3 @@ create table if not exists animals.animals
     foreign key (type) references animals.animal_type (name)
         match simple on update cascade on delete restrict
 );
-
-INSERT INTO animals.animal_type (name, is_predator)
-VALUES ('cat', true),
-       ('dog', true),
-       ('shark', true),
-       ('wolf', true),
-       ('cow', false),
-       ('chicken', false),
-       ('horse', false),
-       ('sheep', false);
-
-INSERT INTO animals.animals ("type", "name", birth_date, "cost")
-VALUES ('cat', 'Alysha', '2000-01-01', 100),
-       ('cat', 'Alfredo', '2001-01-01', 100),
-       ('dog', 'Annette', '2002-01-01', 200),
-       ('dog', 'Abel', '2003-01-01', 1500),
-       ('wolf', 'Aaron', '2024-01-01', 1000);
