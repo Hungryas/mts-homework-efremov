@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +43,7 @@ class UserControllerTest {
         var requestBuilder = get("/user/hello");
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello, world!"));
     }
@@ -54,6 +56,7 @@ class UserControllerTest {
                 .param("name", "tester");
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello, tester!"));
     }
@@ -65,6 +68,7 @@ class UserControllerTest {
         var requestBuilder = get("/user/greet");
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello, Guest!"));
     }
@@ -78,6 +82,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(user));
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(user.getName()));
     }
@@ -91,6 +96,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(user));
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("%s registered!".formatted(user.getName())));
     }
@@ -112,6 +118,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(badUser));
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("name").value(errorMessage));
     }
@@ -129,6 +136,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(badUser));
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("email").value("must be a well-formed email address"));
     }
@@ -142,6 +150,7 @@ class UserControllerTest {
                 .param("id", id);
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("%s : %s".formatted(user.getName(), id)));
     }
@@ -154,6 +163,7 @@ class UserControllerTest {
                 .param("id", StringUtils.EMPTY);
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Пользователь не найден!"));
     }
@@ -167,6 +177,7 @@ class UserControllerTest {
                 .header("User-Agent", userAgent);
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(userAgent));
     }
@@ -179,6 +190,7 @@ class UserControllerTest {
         var requestBuilder = get("/user/validate/{date}", date);
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("%s is valid date".formatted(date)));
     }
@@ -191,6 +203,7 @@ class UserControllerTest {
         var requestBuilder = get("/user/validate/{date}", date);
 
         mvc.perform(requestBuilder)
+                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("%s is invalid. Required format: yyyy-MM-dd".formatted(date)));
     }
