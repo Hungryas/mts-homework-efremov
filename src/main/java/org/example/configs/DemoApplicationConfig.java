@@ -1,4 +1,4 @@
-package org.example;
+package org.example.configs;
 
 import org.example.interceptors.CustomInterceptor;
 import org.example.services.CreateAnimalService;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class DemoConfig implements WebMvcConfigurer {
+public class DemoApplicationConfig implements WebMvcConfigurer {
 
     @Bean
     @Scope("prototype")
