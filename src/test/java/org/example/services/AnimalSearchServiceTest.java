@@ -5,7 +5,7 @@ import org.example.entities.Animal;
 import org.example.entities.AnimalType;
 import org.example.repositories.AnimalRepository;
 import org.example.repositories.AnimalTypeRepository;
-import org.example.services.impl.ResultReaderImpl;
+import org.example.services.impl.ResultReaderServiceImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -116,7 +116,7 @@ class AnimalSearchServiceTest {
     }
 
     private void checkFindOlderAnimalsJson(Map<Animal, Integer> olderAnimals) throws FileNotFoundException {
-        List<Animal> animalsFromFile = new ResultReaderImpl().readOlderAnimals();
+        List<Animal> animalsFromFile = new ResultReaderServiceImpl().readOlderAnimals();
         assertThat(olderAnimals).containsOnlyKeys(animalsFromFile);
     }
 

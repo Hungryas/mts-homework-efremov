@@ -2,7 +2,7 @@ package org.example.services;
 
 import org.example.TestConfig;
 import org.example.entities.Animal;
-import org.example.services.impl.LogDataImpl;
+import org.example.services.impl.LogDataServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ class CreateAnimalServiceTest {
     }
 
     private void checkLogData(ArrayList<Animal> animalList) {
-        List<String> animalLogData = new LogDataImpl().read();
+        List<String> animalLogData = new LogDataServiceImpl().read();
         assertThat(animalList).hasSameSizeAs(animalLogData);
 
         for (String animalLog : animalLogData) {

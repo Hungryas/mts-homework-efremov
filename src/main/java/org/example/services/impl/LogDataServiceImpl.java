@@ -1,7 +1,7 @@
 package org.example.services.impl;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.services.LogData;
+import org.example.services.LogDataService;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 @Log4j2
 @Component
-public class LogDataImpl implements LogData {
+public class LogDataServiceImpl implements LogDataService {
 
     @Override
     public void clear() {

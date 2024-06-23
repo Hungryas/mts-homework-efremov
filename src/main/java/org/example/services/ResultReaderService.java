@@ -5,7 +5,7 @@ import org.example.entities.Animal;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-public interface ResultReader {
+public interface ResultReaderService {
 
     String readSecretInformation() throws FileNotFoundException;
 

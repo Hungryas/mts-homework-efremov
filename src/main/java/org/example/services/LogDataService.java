@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public interface LogData {
+public interface LogDataService {
 
     Path PATH = Paths.get("src", "main", "resources", "animals", "logData.txt");
 

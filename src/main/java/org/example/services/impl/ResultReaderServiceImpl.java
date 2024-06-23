@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.log4j.Log4j2;
 import org.example.entities.Animal;
-import org.example.services.ResultReader;
+import org.example.services.ResultReaderService;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Log4j2
 @Component
-public class ResultReaderImpl implements ResultReader {
+public class ResultReaderServiceImpl implements ResultReaderService {
 
     @Override
     public String readSecretInformation() throws FileNotFoundException {

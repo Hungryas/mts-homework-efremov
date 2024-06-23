@@ -6,7 +6,7 @@ import org.example.entities.Animal;
 import org.example.entities.AnimalType;
 import org.example.repositories.AnimalTypeRepository;
 import org.example.services.CreateAnimalService;
-import org.example.services.LogData;
+import org.example.services.LogDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -32,7 +32,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 public class CreateAnimalServiceImpl implements CreateAnimalService {
 
     @Autowired
-    private LogData logData;
+    private LogDataService logDataService;
 
     @Value("#{'${animal.names}'.split(',')}")
     private List<String> names;
@@ -46,12 +46,12 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
     @Scheduled(cron = "${interval-in-cron}")
     public Map<String, List<Animal>> createAnimals() throws FileNotFoundException {
         final int number = 10;
-        logData.clear();
+        logDataService.clear();
         animals = new HashMap<>();
         int i = 0;
 
         do {
-            logData.append(String.valueOf(++i));
+            logDataService.append(String.valueOf(++i));
             addRandomAnimal();
         } while (i < number);
         setPredefinedNames();
@@ -66,11 +66,11 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         if (number < 1) {
             throw new IllegalArgumentException("Количество животных должно быть положительным");
         }
-        logData.clear();
+        logDataService.clear();
         animals = new HashMap<>();
 
         for (int i = 0; i < number; i++) {
-            logData.append(String.valueOf(i + 1));
+            logDataService.append(String.valueOf(i + 1));
             addRandomAnimal();
         }
         setPredefinedNames();
@@ -87,7 +87,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         String animalData = Stream.of(animalType, animal.getName(), animal.getCost(), animal.getBirthDate())
                 .map(String::valueOf)
                 .collect(Collectors.joining(" ", " ", "\n"));
-        logData.append(animalData);
+        logDataService.append(animalData);
 
         if (!animals.containsKey(animalType)) {
             animals.put(animalType, new ArrayList<>(List.of(animal)));
@@ -106,7 +106,7 @@ public class CreateAnimalServiceImpl implements CreateAnimalService {
         animal.setCost(Integer.parseInt(randomNumeric(5)));
         animal.setCharacter(faker.lorem().word());
         animal.setBirthDate(faker.date().birthday(0, 30).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        animal.setSecretInformation(new ResultReaderImpl().readSecretInformation());
+        animal.setSecretInformation(new ResultReaderServiceImpl().readSecretInformation());
 
         return animal;
     }
