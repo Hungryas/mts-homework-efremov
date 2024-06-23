@@ -1,9 +1,7 @@
-package org.example.utils;
+package org.example.services;
 
 import org.example.TestConfig;
 import org.example.entities.Animal;
-import org.example.services.AnimalSearchService;
-import org.example.services.ResultReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Import(TestConfig.class)
-class ResultReaderTest {
+class ResultReaderServiceTest {
 
     @Autowired
-    private ResultReader resultReader;
+    private ResultReaderService resultReaderService;
 
     @Autowired
     private AnimalSearchService animalSearchService;
@@ -30,7 +28,7 @@ class ResultReaderTest {
     @Test
     @DisplayName("Позитивный тест readSecretInformation")
     void successReadSecretInformation() throws FileNotFoundException {
-        String secretInformation = resultReader.readSecretInformation();
+        String secretInformation = resultReaderService.readSecretInformation();
         assertThat(secretInformation).isNotEmpty();
     }
 
@@ -39,7 +37,7 @@ class ResultReaderTest {
     void successReadOlderAnimals() throws FileNotFoundException {
         int age = ThreadLocalRandom.current().nextInt(15);
         Set<Animal> expectedAnimals = animalSearchService.findOlderAnimal(age).keySet();
-        List<Animal> actualAnimals = resultReader.readOlderAnimals();
+        List<Animal> actualAnimals = resultReaderService.readOlderAnimals();
         assertThat(actualAnimals).hasSameSizeAs(expectedAnimals);
 
         for (Animal actualAnimal : actualAnimals) {

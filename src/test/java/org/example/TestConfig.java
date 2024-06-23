@@ -18,7 +18,10 @@ public class TestConfig {
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
-        return new PostgreSQLContainer<>("postgres:15-alpine")
-                .withInitScript("db_test_init.sql");
+        try (var sqlContainer = new PostgreSQLContainer<>("postgres:15-alpine")) {
+            return sqlContainer.withInitScript("db_test_init.sql");
+        } catch (Exception e) {
+            throw new RuntimeException("SQL container wasn't started", e);
+        }
     }
 }

@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MathFunctionsTest {
 
-    @ParameterizedTest(name = "{displayName} [{index}] number={0}")
+    @ParameterizedTest(name = "{displayName} [{index}] number=[{0}]")
     @DisplayName("Позитивный тест factorial")
     @CsvSource(textBlock = """
             0  ,1
@@ -35,7 +35,7 @@ class MathFunctionsTest {
                 .hasMessage("число не может быть отрицательным");
     }
 
-    @ParameterizedTest(name = "{displayName} [{index}] number={0}")
+    @ParameterizedTest(name = "{displayName} [{index}] number=[{0}]")
     @DisplayName("Позитивный тест fibonacciSequence")
     @CsvSource(quoteCharacter = '"', textBlock = """
             0,"0"
@@ -62,7 +62,7 @@ class MathFunctionsTest {
                 .hasMessage("число не может быть отрицательным");
     }
 
-    @ParameterizedTest(name = "{displayName} [{index}] start={0}, end={1}")
+    @ParameterizedTest(name = "{displayName} [{index}] start=[{0}], end=[{1}]")
     @DisplayName("Позитивный тест primeNumbersFromRange")
     @CsvSource(quoteCharacter = '"', textBlock = """
             2, 2  , "2"
@@ -74,7 +74,7 @@ class MathFunctionsTest {
         assertThat(MathFunctions.primeNumbersFromRange(start, end)).containsExactlyElementsOf(expectedPrimeNumbers);
     }
 
-    @ParameterizedTest(name = "{displayName} [{index}] start={0}, end={1}")
+    @ParameterizedTest(name = "{displayName} [{index}] start=[{0}], end=[{1}]")
     @DisplayName("Негативный тест primeNumbersFromRange с отрицательными параметрами")
     @CsvSource({
             "-1, 1",
