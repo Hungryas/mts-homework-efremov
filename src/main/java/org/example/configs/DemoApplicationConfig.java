@@ -1,6 +1,6 @@
 package org.example.configs;
 
-import org.example.interceptors.CustomInterceptor;
+import org.example.controllers.interceptors.CustomInterceptor;
 import org.example.services.CreateAnimalService;
 import org.example.services.impl.CreateAnimalServiceImpl;
 import org.springframework.context.annotation.Bean;

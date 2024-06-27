@@ -1,4 +1,4 @@
-package org.example.dao;
+package org.example.models;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -18,4 +18,8 @@ public class User {
 
     @Email
     private String email;
+
+    // @NotNull
+    // @Size(min = 3, max = 250, message = "size must be between 3 and 250")
+    // private String password;
 }

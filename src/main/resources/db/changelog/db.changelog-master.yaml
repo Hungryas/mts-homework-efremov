@@ -1,7 +1,13 @@
 databaseChangeLog:
   - include:
-      file: 2024-05-28/changelog-init-tables.sql
+      file: 2024-05-28/changelog-init-animal-tables.sql
       relativeToChangelogFile: true
   - include:
-      file: 2024-05-28/changelog-add-types.sql
+      file: 2024-05-28/changelog-add-animal_types.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 2024-06-21/changelog-init-user-tables.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 2024-06-21/changelog-add-user-roles.sql
       relativeToChangelogFile: true

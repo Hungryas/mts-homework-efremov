@@ -2,11 +2,12 @@ package org.example.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.example.dao.User;
 import org.example.errors.CustomException;
 import org.example.errors.UserNotFoundException;
+import org.example.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/greet")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public String greetingsUser(@RequestBody @Valid User user) {
         return user.getName();
     }
@@ -59,6 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/agent")
+    @PreAuthorize("hasAuthority('USER')")
     public String getUserAgent(@RequestHeader("User-Agent") String userAgent) {
         return userAgent;
     }
